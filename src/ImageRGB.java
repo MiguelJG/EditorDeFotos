@@ -65,8 +65,18 @@ public class ImageRGB {
 	 * //TODO
 	 * 
 	 */
-	public void saveImage() {
-		
+	public void saveImage(String fichero) {
+		try{
+			//	this.image = new BufferedImage(255, 255, BufferedImage.TYPE_INT_RGB )// TYPE_INT_RGB representa color en int rojo 16-23, verde 8-15 and azul in 0-7
+				 File f = new File(fichero); //  no se si el asterisco es cualquier extension
+				
+	           ImageIO.write(this.image, "PNG", f);
+	           ImageIO.write(this.image, "JPG", f);
+	           ImageIO.write(this.image, "RAW", f);
+			}
+			 catch (IOException e) {
+	        	e.printStackTrace();
+	        }
 	}
 	
 	/** Metodo que dado una tabla de asignacion de valores a puntos modifique una imagen
