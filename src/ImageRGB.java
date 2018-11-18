@@ -1,11 +1,13 @@
 import java.util.*;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
 
 /** Esta clase consiste en la representacion que le damos a una imagen. Con este estandar podemos simplificar las operaciones a un solo formato
  * y simplificar la adicion de nuevas utilidades
@@ -13,39 +15,77 @@ import java.io.IOException;
  * @date 26/10/2018
  *
  */
-public class ImageRGB {
+public class ImageRGB extends JFrame{
 	String name;			//String que almacena el PATH a la imagen que queremos modificar
 	Boolean blackAndWhite;  //Boolean que indica si la foto está en blanco y negro (true) o no (false)
 	BufferedImage image;	//Imagen cargada en un buffer
 	
+	
+	JLabel etiqueta;
+	
 	/** Constructor que crea el objeto desde un fichero
 	 * @param name
 	 */
-	public ImageRGB(String name) {
+	public ImageRGB() {
+		super("Spaghetti Code");
+		setIconImage(new ImageIcon("A:\\Users\\Pablo\\EditorDeFotos\\Ficheros\\Logo.png").getImage());
 		try {
-			this.name = new String(name);
-			Image temp = ImageIO.read(new File(name));	//Se carga una awt.image
+			
+			Image temp = ImageIO.read(abrirArchivo());	//Se carga una awt.image
 			this.image = (BufferedImage) temp;				// Se convierte a Buffered image
 			
 		} catch (IOException error) {
 			error.printStackTrace();
 		}
 		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen está en blanco y negro
+		etiqueta = new JLabel(new ImageIcon(image));
+		
+		 
+		getContentPane().add(etiqueta);
+ 
+		this.setSize(500, 500);
 	}
+	
+	
+	private File abrirArchivo() {
+		  
+		  JFileChooser chooser = new JFileChooser();
+		  
+		  FileNameExtensionFilter filter = new FileNameExtensionFilter(
+		        "JPG & GIF Images", "jpg", "gif", "raw");
+		    chooser.setFileFilter(filter);
+		    int returnVal = chooser.showOpenDialog(this);
+		    if(returnVal == JFileChooser.APPROVE_OPTION) {
+		       return chooser.getSelectedFile();
+		    }
+			return null;
+
+
+		    
+	  
+		}
 	
 	/** Constructor que crea el objeto desde otra awt.Image
 	 * @param image awt.Image
 	 * @param name	String del nombre de la imagen
 	 */
 	public ImageRGB(Image image, String name) {
+		super("Spaghetti Code");
 		this.name = new String(name);
 		this.image = (BufferedImage) image;			// Se convierte en buffered image
 		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen está en blanco y negro
+		etiqueta = new JLabel(new ImageIcon(image));
+		getContentPane().add(etiqueta);
+		 
+		this.setSize(500, 500);
 	}
+	
 	
 	/** Funcion que comprueba que una imagen esté en blanco y negro
 	 * @return
 	 */
+	
+	
 	public Boolean isBandW() {
 		Boolean isBandW = new Boolean(true);
 		Integer width = this.image.getWidth();
@@ -60,6 +100,9 @@ public class ImageRGB {
 	    }
 	    return isBandW;
 	}
+	
+	
+	
 	
 	/** Guarda en un fichero la imagen
 	 * //TODO
