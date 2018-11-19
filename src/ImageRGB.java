@@ -11,13 +11,13 @@ import java.io.*;
 
 /** Esta clase consiste en la representacion que le damos a una imagen. Con este estandar podemos simplificar las operaciones a un solo formato
  * y simplificar la adicion de nuevas utilidades
- * @author Miguel Jiménez Gomis
+ * @author Miguel Jimï¿½nez Gomis
  * @date 26/10/2018
  *
  */
 public class ImageRGB extends JFrame{
 	String name;			//String que almacena el PATH a la imagen que queremos modificar
-	Boolean blackAndWhite;  //Boolean que indica si la foto está en blanco y negro (true) o no (false)
+	Boolean blackAndWhite;  //Boolean que indica si la foto estï¿½ en blanco y negro (true) o no (false)
 	BufferedImage image;	//Imagen cargada en un buffer
 	
 	
@@ -37,7 +37,7 @@ public class ImageRGB extends JFrame{
 		} catch (IOException error) {
 			error.printStackTrace();
 		}
-		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen está en blanco y negro
+		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen estï¿½ en blanco y negro
 		etiqueta = new JLabel(new ImageIcon(image));
 		
 		 
@@ -73,7 +73,7 @@ public class ImageRGB extends JFrame{
 		super("Spaghetti Code");
 		this.name = new String(name);
 		this.image = (BufferedImage) image;			// Se convierte en buffered image
-		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen está en blanco y negro
+		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen estï¿½ en blanco y negro
 		etiqueta = new JLabel(new ImageIcon(image));
 		getContentPane().add(etiqueta);
 		 
@@ -81,7 +81,7 @@ public class ImageRGB extends JFrame{
 	}
 	
 	
-	/** Funcion que comprueba que una imagen esté en blanco y negro
+	/** Funcion que comprueba que una imagen estï¿½ en blanco y negro
 	 * @return
 	 */
 	
@@ -90,11 +90,13 @@ public class ImageRGB extends JFrame{
 		Boolean isBandW = new Boolean(true);
 		Integer width = this.image.getWidth();
 	    Integer height = this.image.getHeight();
+	    isBandW = true;
 	    for(int i = 0; i < width; i++) {
 	    	for(int j = 0; j < height; j++) {
 	    		Color dummy = new Color(image.getRGB(i, j));
 	    		if(dummy.getBlue() != dummy.getRed() || dummy.getBlue() != dummy.getGreen()) {
 	    			isBandW = false;
+	    			System.out.println(dummy.getBlue() +" "+ dummy.getRed() +" "+ dummy.getBlue() +" "+ dummy.getGreen());
 	    		}
 	    	}
 	    }
@@ -130,11 +132,28 @@ public class ImageRGB extends JFrame{
 	    Integer height = this.image.getHeight();
 	    for(int i = 0; i < width; i++) {
 	    	for(int j = 0; j < height; j++) {
-	    		Color dummy = new Color(image.getRGB(i, j));
+	    		Color dummy = new Color(this.image.getRGB(i, j));
 	    		dummy = new Color(tabla.getR(dummy.getRed()), tabla.getG(dummy.getGreen()), tabla.getB(dummy.getBlue()));
 	    		image.setRGB(i, j, dummy.getRGB());
 	    	}
 	    }
+	}
+	
+	/**Este mÃ©todo transforma una imagen a blanco y negro usando la conversiÃ³n NTSC
+	 * 
+	 */
+	void transformToBlackAndWhite() {
+		Integer width = this.image.getWidth();
+	    Integer height = this.image.getHeight();
+		for(int i = 0; i < width; i++) {
+	    	for(int j = 0; j < height; j++) {
+	    		Color dummy = new Color(this.image.getRGB(i, j));
+	    		//NTSC -> 0.299 R + 0.587 G + 0.114 B
+	    		int grey = new Double(0.299 * dummy.getRed() + 0.587 * dummy.getGreen() + 0.114 * dummy.getBlue()).intValue();
+	    		dummy = new Color(grey, grey, grey);
+	    		this.image.setRGB(i, j, dummy.getRGB());
+	    	}
+		}
 	}
 
 	public String getName() {
