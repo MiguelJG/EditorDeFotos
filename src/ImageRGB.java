@@ -96,10 +96,10 @@ public class ImageRGB extends JFrame{
 	    		Color dummy = new Color(image.getRGB(i, j));
 	    		if(dummy.getBlue() != dummy.getRed() || dummy.getBlue() != dummy.getGreen()) {
 	    			isBandW = false;
-	    			System.out.println(dummy.getBlue() +" "+ dummy.getRed() +" "+ dummy.getBlue() +" "+ dummy.getGreen());
 	    		}
 	    	}
 	    }
+	    this.blackAndWhite = isBandW; // se actualiza el estado de la imagen
 	    return isBandW;
 	}
 	
@@ -151,9 +151,11 @@ public class ImageRGB extends JFrame{
 	    		//NTSC -> 0.299 R + 0.587 G + 0.114 B
 	    		int grey = new Double(0.299 * dummy.getRed() + 0.587 * dummy.getGreen() + 0.114 * dummy.getBlue()).intValue();
 	    		dummy = new Color(grey, grey, grey);
+	    		//System.out.println(dummy.getBlue() +" "+ dummy.getRed() +" "+ dummy.getGreen());
 	    		this.image.setRGB(i, j, dummy.getRGB());
 	    	}
 		}
+		this.isBandW();
 	}
 
 	public String getName() {
