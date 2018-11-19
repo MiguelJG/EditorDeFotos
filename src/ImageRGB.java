@@ -199,6 +199,33 @@ public class ImageRGB extends JFrame{
 		return hist;
 	}
 	
+	/** Calcula el contraste para el histograma de un canal dado (es decir, su media)
+	 * @param hist
+	 * @return
+	 */
+	public double brillo(ArrayList<Long> hist) {
+		Long dummy = new Long(0);
+		for(int i = 0; i < hist.size(); ++i) {
+			dummy += i * hist.get(i);
+		}
+		return  dummy / 256;
+	}
+	
+	/** Retorna el contraste para un canal dado (es decir su desviación tipica)
+	 * @param hist
+	 * @return
+	 */
+	public double contraste(ArrayList<Long> hist) {
+		double media = this.brillo(hist);
+		double varianza = 0;
+		for(int i = 0; i < hist.size(); ++i) {
+			varianza += (i * i) * hist.get(i); // x^2*fx
+		}
+		varianza = varianza / 256;
+		varianza = varianza - (media * media);
+		return Math.sqrt(varianza); //la raiz cuadrada de la varianza es la desviación tipica
+	}
+	
 	/** Retorna una lista con la cantidades de pixeles que tienen dicho tono para el canal azul
 	 * @return
 	 */
