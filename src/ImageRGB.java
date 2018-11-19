@@ -203,27 +203,39 @@ public class ImageRGB extends JFrame{
 	 * @param hist
 	 * @return
 	 */
-	public double brillo(ArrayList<Long> hist) {
+	public Double getBrillo(ArrayList<Long> hist) {
 		Long dummy = new Long(0);
 		for(int i = 0; i < hist.size(); ++i) {
 			dummy += i * hist.get(i);
 		}
-		return  dummy / 256;
+		return  dummy.doubleValue() / (this.image.getHeight() * this.image.getWidth());
 	}
 	
 	/** Retorna el contraste para un canal dado (es decir su desviación tipica)
 	 * @param hist
 	 * @return
 	 */
-	public double contraste(ArrayList<Long> hist) {
-		double media = this.brillo(hist);
-		double varianza = 0;
+	public Double getContraste(ArrayList<Long> hist) {
+		Double media = this.getBrillo(hist);
+		Double varianza = new Double(0);
 		for(int i = 0; i < hist.size(); ++i) {
-			varianza += (i * i) * hist.get(i); // x^2*fx
+			varianza += (i * i) * hist.get(i).doubleValue(); // x^2*fx
 		}
-		varianza = varianza / 256;
+		varianza = varianza / (this.image.getHeight() * this.image.getWidth());
 		varianza = varianza - (media * media);
 		return Math.sqrt(varianza); //la raiz cuadrada de la varianza es la desviación tipica
+	}
+	
+	/** Retorna la entropía de un canal dado
+	 * @param hist
+	 * @return
+	 */
+	public Double getEntropia(ArrayList<Long> hist) { // H = ∑ pi*log(1/pi) = -∑ pi log(pi)
+		Double entropia = new Double(0);
+		for(int i = 0; i < hist.size(); ++i) {
+			entropia += -((i * hist.get(i).doubleValue()) * Math.log(i));
+		}
+		return entropia;
 	}
 	
 	/** Retorna una lista con la cantidades de pixeles que tienen dicho tono para el canal azul
