@@ -9,6 +9,7 @@ public class Main {
 		//System.out.println(im2.blackAndWhite);
 		im.transformToBlackAndWhite();
 		System.out.println(im.blackAndWhite);
+		System.out.println(im.getHistRed());
 		//System.out.println(im2.blackAndWhite);
 		im.show();	
 		//im2.show();

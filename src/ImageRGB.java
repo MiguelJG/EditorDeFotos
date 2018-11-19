@@ -151,11 +151,73 @@ public class ImageRGB extends JFrame{
 	    		//NTSC -> 0.299 R + 0.587 G + 0.114 B
 	    		int grey = new Double(0.299 * dummy.getRed() + 0.587 * dummy.getGreen() + 0.114 * dummy.getBlue()).intValue();
 	    		dummy = new Color(grey, grey, grey);
-	    		//System.out.println(dummy.getBlue() +" "+ dummy.getRed() +" "+ dummy.getGreen());
 	    		this.image.setRGB(i, j, dummy.getRGB());
 	    	}
 		}
 		this.isBandW();
+	}
+	
+	/** Retorna una lista con la cantidades de pixeles que tienen dicho tono para el canal rojo
+	 * @return
+	 */
+	public ArrayList<Long> getHistRed(){
+		ArrayList<Long> hist = new ArrayList<Long>();
+		for (int i = 0; i <= 255; i++) {
+			  hist.add(new Long(0));
+		}
+		Integer width = this.image.getWidth();
+	    Integer height = this.image.getHeight();
+		for(int i = 0; i < width; i++) {
+	    	for(int j = 0; j < height; j++) {
+	    		Color dummy = new Color(this.image.getRGB(i, j));
+	    		Long temp = hist.get(dummy.getRed());
+	    		temp +=1;
+	    		hist.set(dummy.getRed(), temp);
+	    	}
+		}
+		return hist;
+	}
+	
+	/** Retorna una lista con la cantidades de pixeles que tienen dicho tono para el canal verde
+	 * @return
+	 */
+	public ArrayList<Long> getHistGreen(){
+		ArrayList<Long> hist = new ArrayList<Long>();
+		for (int i = 0; i < 255; i++) {
+			  hist.add(new Long(0));
+		}
+		Integer width = this.image.getWidth();
+	    Integer height = this.image.getHeight();
+		for(int i = 0; i < width; i++) {
+	    	for(int j = 0; j < height; j++) {
+	    		Color dummy = new Color(this.image.getRGB(i, j));
+	    		Long temp = hist.get(dummy.getGreen());
+	    		temp +=1;
+	    		hist.set(dummy.getRed(), temp);
+	    	}
+		}
+		return hist;
+	}
+	
+	/** Retorna una lista con la cantidades de pixeles que tienen dicho tono para el canal azul
+	 * @return
+	 */
+	public ArrayList<Long> getHistBlue(){
+		ArrayList<Long> hist = new ArrayList<Long>();
+		for (int i = 0; i < 255; i++) {
+			  hist.add(new Long(0));
+		}
+		Integer width = this.image.getWidth();
+	    Integer height = this.image.getHeight();
+		for(int i = 0; i < width; i++) {
+	    	for(int j = 0; j < height; j++) {
+	    		Color dummy = new Color(this.image.getRGB(i, j));
+	    		Long temp = hist.get(dummy.getBlue());
+	    		temp +=1;
+	    		hist.set(dummy.getRed(), temp);
+	    	}
+		}
+		return hist;
 	}
 
 	public String getName() {
