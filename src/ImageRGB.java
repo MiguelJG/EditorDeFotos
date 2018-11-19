@@ -219,6 +219,22 @@ public class ImageRGB extends JFrame{
 		return hist;
 	}
 	
+	/** Para un histograma retorna su histograma acumulado
+	 * @param hist
+	 * @return
+	 */
+	public ArrayList<Long> getHistAcum(ArrayList<Long> hist){
+		ArrayList<Long> acum = new ArrayList<Long>();
+		for (int i = 0; i <= 255; i++) {
+			  acum.add(new Long(0));
+		}
+		hist.set(0,hist.get(0));
+		for(int i = 1; i <= 255; i++) {
+			acum.set(i, hist.get(i) + acum.get(i - 1));
+		}
+		return acum;
+	}
+	
 	/** Calcula el contraste para el histograma de un canal dado (es decir, su media)
 	 * @param hist
 	 * @return

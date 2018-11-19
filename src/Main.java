@@ -12,6 +12,7 @@ public class Main {
 		System.out.println(im.getHistRed());
 		System.out.println(im.getBrillo(im.getHistRed()));
 		System.out.println(im.getContraste(im.getHistRed()));
+		System.out.println(im.getHistAcum(im.getHistRed()));
 		//System.out.println(im.getEntropia(im.getHistRed()));
 		//System.out.println(im2.blackAndWhite);
 		im.show();	
