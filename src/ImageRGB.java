@@ -116,7 +116,6 @@ public class ImageRGB extends JFrame{
 				 File f = new File(fichero); //  no se si el asterisco es cualquier extension
 				
 	           ImageIO.write(this.image, "PNG", f);
-	           ImageIO.write(this.image, "JPG", f);
 	           ImageIO.write(this.image, "RAW", f);
 			}
 			 catch (IOException e) {
@@ -183,7 +182,7 @@ public class ImageRGB extends JFrame{
 	 */
 	public ArrayList<Long> getHistGreen(){
 		ArrayList<Long> hist = new ArrayList<Long>();
-		for (int i = 0; i < 255; i++) {
+		for (int i = 0; i <= 255; i++) {
 			  hist.add(new Long(0));
 		}
 		Integer width = this.image.getWidth();
@@ -192,6 +191,27 @@ public class ImageRGB extends JFrame{
 	    	for(int j = 0; j < height; j++) {
 	    		Color dummy = new Color(this.image.getRGB(i, j));
 	    		Long temp = hist.get(dummy.getGreen());
+	    		temp +=1;
+	    		hist.set(dummy.getRed(), temp);
+	    	}
+		}
+		return hist;
+	}
+	
+	/** Retorna una lista con la cantidades de pixeles que tienen dicho tono para el canal azul
+	 * @return
+	 */
+	public ArrayList<Long> getHistBlue(){
+		ArrayList<Long> hist = new ArrayList<Long>();
+		for (int i = 0; i <= 255; i++) {
+			  hist.add(new Long(0));
+		}
+		Integer width = this.image.getWidth();
+	    Integer height = this.image.getHeight();
+		for(int i = 0; i < width; i++) {
+	    	for(int j = 0; j < height; j++) {
+	    		Color dummy = new Color(this.image.getRGB(i, j));
+	    		Long temp = hist.get(dummy.getBlue());
 	    		temp +=1;
 	    		hist.set(dummy.getRed(), temp);
 	    	}
@@ -238,26 +258,7 @@ public class ImageRGB extends JFrame{
 		return entropia;
 	}
 	
-	/** Retorna una lista con la cantidades de pixeles que tienen dicho tono para el canal azul
-	 * @return
-	 */
-	public ArrayList<Long> getHistBlue(){
-		ArrayList<Long> hist = new ArrayList<Long>();
-		for (int i = 0; i < 255; i++) {
-			  hist.add(new Long(0));
-		}
-		Integer width = this.image.getWidth();
-	    Integer height = this.image.getHeight();
-		for(int i = 0; i < width; i++) {
-	    	for(int j = 0; j < height; j++) {
-	    		Color dummy = new Color(this.image.getRGB(i, j));
-	    		Long temp = hist.get(dummy.getBlue());
-	    		temp +=1;
-	    		hist.set(dummy.getRed(), temp);
-	    	}
-		}
-		return hist;
-	}
+	
 
 	public String getName() {
 		return name;
