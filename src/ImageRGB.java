@@ -291,8 +291,9 @@ public class ImageRGB extends JFrame{
 		ConversionTable tabla = new ConversionTable();
 		for(int i = 0; i < numTramos; i += 2) {
 			for(int j = puntos[i]; j <= puntos[i + 2]; j++) {
+				int value = 0;
 				try {
-					int value = Funciones.fX(j, puntos[i], puntos[i + 1], puntos[i + 2], puntos[i + 3]);
+					value = Funciones.fX(j, puntos[i], puntos[i + 1], puntos[i + 2], puntos[i + 3]);
 				} catch(Error err) {
 					System.out.println(err);
 				}
