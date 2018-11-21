@@ -13,10 +13,13 @@ public class Main {
 		System.out.println(im.getBrillo(im.getHistRed()));
 		System.out.println(im.getContraste(im.getHistRed()));
 		System.out.println(im.getHistAcum(im.getHistRed()));
-		//System.out.println(im.getEntropia(im.getHistRed()));
-		//System.out.println(im2.blackAndWhite);
+		try {
+		im.transformacionLinealPorTramo("1-0-255-255-0");
+		}catch(Error e) {
+			System.out.println(e);
+		}
+		System.out.println(im.getHistRed());
 		im.show();	
-		//im2.show();
 	}
 
 }

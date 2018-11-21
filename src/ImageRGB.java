@@ -18,8 +18,7 @@ import java.io.*;
 public class ImageRGB extends JFrame{
 	String name;			//String que almacena el PATH a la imagen que queremos modificar
 	Boolean blackAndWhite;  //Boolean que indica si la foto est� en blanco y negro (true) o no (false)
-	BufferedImage image;	//Imagen cargada en un buffer
-	
+	BufferedImage image;	//Imagen cargada en un buffer	
 	
 	JLabel etiqueta;
 	
@@ -107,7 +106,6 @@ public class ImageRGB extends JFrame{
 	
 	
 	/** Guarda en un fichero la imagen
-	 * //TODO
 	 * 
 	 */
 	public void saveImage(String fichero) {
@@ -274,6 +272,36 @@ public class ImageRGB extends JFrame{
 		return entropia;
 	}
 	
+	/** Esta funcion recibe un string de puntos y numero de intervalos y aplica una transformacion lineal por tramos con dichos puntos
+	 * @param puntos
+	 */
+	public void transformacionLinealPorTramo(String inPuntos) {
+		String[] dummy = inPuntos.split("-");
+		int numTramos = Integer.parseInt(dummy[0]);
+		if(numTramos < 0 || numTramos >= 255) {
+			throw(new Error("Numero de tramos no valido en operacion de transformación lineal por puntos"));
+		}
+		if(dummy.length - 1 < (numTramos + 1) * 2) {
+			throw(new Error("Numero de puntos introducidos para definir el numero de tramos no valido"));
+		}
+		Integer puntos[] = new Integer[dummy.length - 1];
+		for(int i = 1; i < dummy.length; i++) { //array de puntos ya formateados
+			puntos[i - 1] = Integer.parseInt(dummy[i]);
+		}
+		ConversionTable tabla = new ConversionTable();
+		for(int i = 0; i < numTramos; i += 2) {
+			for(int j = puntos[i]; j <= puntos[i + 2]; j++) {
+				try {
+					int value = Funciones.fX(j, puntos[i], puntos[i + 1], puntos[i + 2], puntos[i + 3]);
+				} catch(Error err) {
+					System.out.println(err);
+				}
+				tabla.setPos(j, value, value, value); // se ponen todos los valores al mismo ya que no estamos trabajando con imágenes a color
+			}
+		}
+		this.applyPointTransformation(tabla);
+	}
+	
 	
 
 	public String getName() {
@@ -302,7 +330,7 @@ class ConversionTable {
 	ArrayList<RGB> tabla = new ArrayList<RGB>();
 	
 	public ConversionTable() {
-		for (int i = 0; i < 255; i++) {
+		for (int i = 0; i < 256; i++) {
 			tabla.add(new RGB(0, 0, 0));
 		}
 	}
@@ -361,4 +389,51 @@ class RGB{
 	public void setBlue(Integer blue) {
 		this.blue = blue;
 	}	
+}
+
+/**Esta clase encapsula funciones estaticas para hacer calculos sobre rectas dados 2 puntos
+ *
+ */
+class Funciones{		
+	/** Retorna el valor de la Y para un punto X sobre la recta formada por los puntos x1,y1/x2,y2
+	 * @param x
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
+	public static Integer fX(Integer x, Integer x1, Integer y1, Integer x2, Integer y2){
+		if((x1 == 0 && x2 == 0)) {
+			throw new Error("Valores de los puntos de la funcion incorrectos");
+		}
+		return Math.round  ((((x - x1) * (y2 - y1))/(x2 - x1)) + y1);
+	}
+	
+	/** Retorna el valor de la x para un punto Y sobre la recta formada por los puntos x1,y1/x2,y2
+	 * @param y
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
+	public static Integer fY(Integer y, Integer x1, Integer y1, Integer x2, Integer y2){
+		if((y1 == 0 && y2 == 0)) {
+			throw new Error("Valores de los puntos de la funcion incorrectos");
+		}
+		return Math.round  ((((y - y1) * (x2 - x1))/(y2 - y1)) + x1);
+	}
+	
+	/** Dados 2 puntos x1,y1/x2,y2 retorna la pendiente de la recta que conforman
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
+	public static Double pendiente(Integer x1, Integer y1, Integer x2, Integer y2) {
+		return new Double(y2 - y1)/new Double(x2 - x1);
+	}
+	
 }
