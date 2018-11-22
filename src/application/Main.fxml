@@ -5,7 +5,7 @@
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="62.0" prefWidth="316.0" style="-fx-background-color: #2A2E37;" stylesheets="@main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ImageControl">
+<AnchorPane prefHeight="62.0" prefWidth="425.0" style="-fx-background-color: #2A2E37;" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ImageControl">
    <children>
       <Button layoutX="8.0" layoutY="12.0" mnemonicParsing="false" onAction="#chargeImage" text="Nueva Imagen" />
       <SplitMenuButton layoutX="158.0" layoutY="19.0" mnemonicParsing="false" onAction="#histograma" style="-fx-background-color: #2A2E37;" text="Histograma">
@@ -17,6 +17,6 @@
             <MenuItem mnemonicParsing="false" onAction="#ecualizar" text="Ecualizar" />
         </items>
       </SplitMenuButton>
-      <Button layoutX="224.0" layoutY="2.0" mnemonicParsing="false" onAction="#SaveImageB" text="Guardar Imagen" />
+      <Button layoutX="272.0" layoutY="12.0" mnemonicParsing="false" onAction="#SaveImageB" text="Guardar Imagen" />
    </children>
 </AnchorPane>
