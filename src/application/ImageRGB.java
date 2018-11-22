@@ -313,9 +313,12 @@ public class ImageRGB{
 		for(int i = 0; i < histInit.size(); i++) {
 			for(int j = 0; j < histTarget.size(); j++) {				
 				if(j + 1 < histTarget.size()) {					
-					if(histInit.get(i) <= histTarget.get(j) && histInit.get(i) < histTarget.get(j + 1)) {
+					if(histInit.get(i) < histTarget.get(j + 1)) {
 						tabla.setPos(i, j, j, j);
+						break;
 					}
+				} else {
+					tabla.setPos(i, j, j, j);
 				}
 			}
 		}
