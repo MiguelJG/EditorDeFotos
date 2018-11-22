@@ -166,7 +166,7 @@ public class ImageRGB{
 	    		Color dummy = new Color(this.image.getRGB(i, j));
 	    		Long temp = hist.get(dummy.getBlue());
 	    		temp +=1;
-	    		hist.set(dummy.getRed(), temp);
+	    		hist.set(dummy.getBlue(), temp);
 	    	}
 		}
 		return hist;
@@ -185,7 +185,7 @@ public class ImageRGB{
 	    		Color dummy = new Color(this.image.getRGB(i, j));
 	    		Long temp = hist.get(dummy.getGreen());
 	    		temp +=1;
-	    		hist.set(dummy.getRed(), temp);
+	    		hist.set(dummy.getGreen(), temp);
 	    	}
 		}
 		return hist;

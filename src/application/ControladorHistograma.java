@@ -55,25 +55,18 @@ public class ControladorHistograma implements Initializable{
 			entropia.setText("Entro y pia");
 			XYChart.Series<String, Integer> rojos = new XYChart.Series<>();
 			rojos.setName("Red");
-			for(int i = 0; i <= 255; i++) {
-				rojos.getData().add(new XYChart.Data<String, Integer>(i+"" , (int) (long) r.get(i)));
-			}
-			
-			barChartR.getData().addAll(rojos);
-			
+			XYChart.Series<String, Integer> verdes = new XYChart.Series<>();
+			verdes.setName("Green");
 			XYChart.Series<String, Integer> azules = new XYChart.Series<>();
 			azules.setName("Blue");
 			for(int i = 0; i <= 255; i++) {
+				rojos.getData().add(new XYChart.Data<String, Integer>(i+"" , (int) (long) r.get(i)));
 				azules.getData().add(new XYChart.Data<String, Integer>(i+"", (int) (long) a.get(i)));
-			}
-			
-			barChartR.getData().addAll(azules);
-			XYChart.Series<String, Integer> verdes = new XYChart.Series<>();
-			verdes.setName("Green");
-			for(int i = 0; i <= 255; i++) {
 				verdes.getData().add(new XYChart.Data<String, Integer>(i+"", (int) (long) v.get(i)));
 			}
 			
+			barChartR.getData().addAll(rojos);
+			barChartR.getData().addAll(azules);	
 			barChartR.getData().addAll(verdes);
 		}else {
 			ArrayList<Long> r = im.getHistRed();
