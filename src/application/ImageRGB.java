@@ -308,12 +308,10 @@ public class ImageRGB{
 			for(int j = puntos[i*2]; j <= puntos[i * 2 +2]; j++) {
 				int value = 0;
 				try {
-					System.out.println(puntos[i*2] + " " + puntos[i*2 + 1] + " " + puntos[i*2 + 2] + " " + puntos[i*2 + 3]);
 					value = Funciones.fX(j, puntos[i*2], puntos[i*2 + 1], puntos[i*2 + 2], puntos[i*2 + 3]);
 				} catch(Error err) {
 					System.out.println(err);
 				}
-				System.out.println(value);
 				tabla.setPos(j, value, value, value); // se ponen todos los valores al mismo ya que no estamos trabajando con imágenes a color
 			}
 		}
