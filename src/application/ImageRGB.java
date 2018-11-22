@@ -120,24 +120,6 @@ public class ImageRGB{
 	}
 	
 	
-	/** Guarda en un fichero la imagen
-	 * //TODO
-	 * 
-	 */
-	public void saveImage(String fichero) {
-		try{
-			//	this.image = new BufferedImage(255, 255, BufferedImage.TYPE_INT_RGB )// TYPE_INT_RGB representa color en int rojo 16-23, verde 8-15 and azul in 0-7
-				 File f = new File(fichero); //  no se si el asterisco es cualquier extension
-				
-	           ImageIO.write(this.image, "PNG", f);
-	           ImageIO.write(this.image, "JPG", f);
-	           ImageIO.write(this.image, "RAW", f);
-			}
-			 catch (IOException e) {
-	        	e.printStackTrace();
-	        }
-	}
-	
 	/** Metodo que dado una tabla de asignacion de valores a puntos modifique una imagen
 	 * 
 	 */
@@ -288,14 +270,16 @@ public class ImageRGB{
 			puntos[i - 1] = Integer.parseInt(dummy[i]);
 		}
 		ConversionTable tabla = new ConversionTable();
-		for(int i = 0; i < numTramos; i += 2) {
-			for(int j = puntos[i]; j <= puntos[i + 2]; j++) {
+		for(int i = 0; i < numTramos; i ++) {
+			for(int j = puntos[i*2]; j <= puntos[i * 2 +2]; j++) {
 				int value = 0;
 				try {
-					value = Funciones.fX(j, puntos[i], puntos[i + 1], puntos[i + 2], puntos[i + 3]);
+					System.out.println(puntos[i*2] + " " + puntos[i*2 + 1] + " " + puntos[i*2 + 2] + " " + puntos[i*2 + 3]);
+					value = Funciones.fX(j, puntos[i*2], puntos[i*2 + 1], puntos[i*2 + 2], puntos[i*2 + 3]);
 				} catch(Error err) {
 					System.out.println(err);
 				}
+				System.out.println(value);
 				tabla.setPos(j, value, value, value); // se ponen todos los valores al mismo ya que no estamos trabajando con imágenes a color
 			}
 		}
