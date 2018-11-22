@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="459.0" prefWidth="1358.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorHistogramaAcumulado">
+   <children>
+      <BarChart fx:id="barChartR" layoutX="14.0" layoutY="14.0" prefHeight="414.0" prefWidth="813.0">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis side="LEFT" />
+        </yAxis>
+      </BarChart>
+      <Label fx:id="tamano" layoutX="827.0" layoutY="140.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
+      <Label fx:id="Brillo" layoutX="827.0" layoutY="270.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
+      <Label fx:id="rango" layoutX="827.0" layoutY="203.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
+      <Label fx:id="entropia" layoutX="827.0" layoutY="338.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
+      <Label fx:id="tipo" layoutX="827.0" layoutY="71.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
+   </children>
+</AnchorPane>
