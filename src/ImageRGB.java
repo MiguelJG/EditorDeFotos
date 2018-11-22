@@ -136,10 +136,17 @@ public class ImageRGB extends JFrame{
 	    }
 	}
 	
+	/** Retorna el numero de pixeles de la imagen
+	 * @return
+	 */
+	public Long tamanio() {
+		return new Long(this.image.getHeight() * this.image.getWidth());
+	}
+	
 	/**Este método transforma una imagen a blanco y negro usando la conversión NTSC
 	 * 
 	 */
-	void transformToBlackAndWhite() {
+	public void transformToBlackAndWhite() {
 		Integer width = this.image.getWidth();
 	    Integer height = this.image.getHeight();
 		for(int i = 0; i < width; i++) {
@@ -226,7 +233,7 @@ public class ImageRGB extends JFrame{
 		for (int i = 0; i <= 255; i++) {
 			  acum.add(new Long(0));
 		}
-		hist.set(0,hist.get(0));
+		acum.set(0,hist.get(0));
 		for(int i = 1; i <= 255; i++) {
 			acum.set(i, hist.get(i) + acum.get(i - 1));
 		}
@@ -303,7 +310,45 @@ public class ImageRGB extends JFrame{
 		this.applyPointTransformation(tabla);
 	}
 	
+	/** Dados 2 histogramas aplica sobre la imagen
+	 * @param histInit histograma inicial de la imagen
+	 * @param histTarget histograma final de la imágen
+	 */
+	void transformacionEspHistograma(ArrayList<Long> histInit, ArrayList<Long> histTarget) {
+		ConversionTable tabla = new ConversionTable();
+		for(int i = 0; i < histInit.size(); i++) {
+			for(int j = 0; j < histTarget.size(); j++) {				
+				if(j + 1 < histTarget.size()) {					
+					if(histInit.get(i) <= histTarget.get(j) && histInit.get(i) < histTarget.get(j + 1)) {
+						tabla.setPos(i, j, j, j);
+					}
+				}
+			}
+		}
+		this.applyPointTransformation(tabla);
+	}
 	
+	/** Ecualiza el histograma a una recta con origen 0,0 y fin en 255,255
+	 * 
+	 */
+	void equalizarHistograma() {
+		ArrayList<Long> histTarget = new ArrayList<Long>();
+		int totalProportion = 32896;//Sum de 1 a 256 (de 0 a 255) = 256+1
+		for(Long i = new Long(0); i < 256; i++) {
+			histTarget.add(i * this.tamanio() / 255);
+		}
+		//chivato-------------------------------
+		/**
+		System.out.println("Actual:" + this.getHistAcum(this.getHistRed()));		
+		int cantPixels = 0;
+		for(int i = 0; i < histTarget.size(); i++) {
+			cantPixels += histTarget.get(i);
+		}
+		System.out.println("Target:" + histTarget + " " + cantPixels + " " + this.tamanio());
+		**/
+		//fin chivato-------------------------------
+		this.transformacionEspHistograma(this.getHistAcum(this.getHistRed()), histTarget);// se aplica sobre el histograma del rojo suponiendo que la imágen es en blanco y negro
+	}
 
 	public String getName() {
 		return name;
