@@ -12,15 +12,12 @@ import javafx.scene.Scene;
 
 public class Main extends Application {
 	@Override
-	public void start(Stage primaryStage) throws Exception{
-			
-			
+	public void start(Stage primaryStage) throws Exception{			
 			Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
 			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("Spaguetti Code");
-			primaryStage.show();
-			
+			primaryStage.setTitle("FotovisionPro");
+			primaryStage.show();			
 	}
 	
 	public static void main(String[] args) {

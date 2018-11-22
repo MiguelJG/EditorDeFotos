@@ -49,10 +49,10 @@ public class ControladorHistogramaAcumulado implements Initializable{
 			ArrayList<Long> a =im.getHistAcum(im.getHistBlue());
 			ArrayList<Long> v = im.getHistAcum(im.getHistGreen());
 			tipo.setText("El tipo de fichero es: " + im.getTipo());
-			tamano.setText("El tamaño de la imagen es de " + im.getWidth() + "X" + im.getHeight());
+			tamano.setText("El tamaï¿½o de la imagen es de " + im.getWidth() + "X" + im.getHeight());
 			rango.setText("MinR[ " +im.min(r)+ " ], MaxR[ " +im.max(r)+ " ], MinG[ " +im.min(v)+ " ], MaxG[ " +im.max(v)+ " ], MinB[ " +im.max(v)+ " ], MaxB[ " +im.min(a)+ " ]" );
 			Brillo.setText("Brillo Red: " + im.getBrillo(r) + " , brillo Green: " + im.getBrillo(v) + " brillo Blue: " + im.getBrillo(a));
-			entropia.setText("Entro y pia");
+			entropia.setText("Entropia: " + im.getEntropia(r));
 			XYChart.Series<String, Integer> rojos = new XYChart.Series<>();
 			rojos.setName("Red");
 			for(int i = 0; i <= 255; i++) {
@@ -86,10 +86,10 @@ public class ControladorHistogramaAcumulado implements Initializable{
 			barChartR.getData().addAll(rojos);
 			
 			tipo.setText("El tipo de fichero es: " + im.getTipo());
-			tamano.setText("El tamaño de la imagen es de " + im.getWidth() + "X" + im.getHeight());
+			tamano.setText("El tamaï¿½o de la imagen es de " + im.getWidth() + "X" + im.getHeight());
 			rango.setText("Min[ " +im.min(r)+ " ], Max[ " +im.max(r)+ " ]" );
 			Brillo.setText("Brillo: " + im.getBrillo(r));
-			entropia.setText("Entro y pia");
+			entropia.setText("Entropia: " + im.getEntropia(r));
 		}
 		
 	}

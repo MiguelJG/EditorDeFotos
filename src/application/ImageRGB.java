@@ -22,9 +22,7 @@ import java.util.ArrayList;
 public class ImageRGB{
 	private Boolean blackAndWhite;  //Boolean que indica si la foto estï¿½ en blanco y negro (true) o no (false)
 	private BufferedImage image;	//Imagen cargada en un buffer
-	private String tipo;
-	
-	
+	private String tipo = new String();	
 	
 	public String getTipo() {
 		return tipo;
@@ -37,33 +35,38 @@ public class ImageRGB{
 	/** Constructor que crea el objeto desde un fichero
 	 * @param name
 	 */
-	public ImageRGB() {
-		
-		
+	public ImageRGB() {		
 	}
 	
-	public int max(ArrayList<Long> hist) {
-		
+	/** Retorna el valor maximo de un histograma dado
+	 * @param hist
+	 * @return
+	 */
+	public int max(ArrayList<Long> hist) {		
 		int max = 0;
 		for(int i = 0; i <= 255 ; i++) {
 			if(hist.get(i) >= hist.get(max))
 				max = i;
-		}
-		
-		return max;
-		
+		}		
+		return max;		
 	}
 	
+	/** Retorna el valor minimo de un histograma dado
+	 * @param hist
+	 * @return
+	 */
 	public int min(ArrayList<Long> hist) {
 		int min = 0;
 		for(int i = 0; i <= 255 ; i++) {
 			if(hist.get(i) <= hist.get(min))
 				min = i;
-		}
-		
+		}		
 		return min;
 	}
 	
+	/** Convierte la imagenAWT en una imagenFX
+	 * @return
+	 */
 	public WritableImage getImageFX() {
 		return SwingFXUtils.toFXImage(image, null);
 	}
@@ -72,29 +75,25 @@ public class ImageRGB{
 	 * @param image awt.Image
 	 * @param name	String del nombre de la imagen
 	 */
-	public ImageRGB(Image image) {
-		
+	public ImageRGB(Image image) {		
 		this.image = (BufferedImage) image;			// Se convierte en buffered image
-		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen estï¿½ en blanco y negro
-
-		
+		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen estï¿½ en blanco y negro		
 	}
 	
-	
+	/** Constructor que crea el objeto desde una FXImage
+	 * @param image FXImage
+	 * @param name	String del nombre de la imagen
+	 */
 	public ImageRGB(javafx.scene.image.Image image, String tipo) {
 		this.tipo = tipo;
 		this.image = SwingFXUtils.fromFXImage(image,null);			// Se convierte en buffered image
-		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen estï¿½ en blanco y negro
-		
-		
+		this.blackAndWhite = new Boolean(this.isBandW());	// se mira si la imagen estï¿½ en blanco y negro		
 	}
 	
 	
 	/** Funcion que comprueba que una imagen estï¿½ en blanco y negro
 	 * @return
-	 */
-	
-	
+	 */	
 	public Boolean isBandW() {
 		Boolean isBandW = new Boolean(true);
 		Integer width = this.image.getWidth();
@@ -153,7 +152,9 @@ public class ImageRGB{
 	}
 
 	
-	
+	/** Retorna el histograma del canal azul de la imagen
+	 * @return
+	 */
 	public ArrayList<Long> getHistBlue(){
 		ArrayList<Long> hist = new ArrayList<Long>();
 		for (int i = 0; i <= 255; i++) {
@@ -172,7 +173,9 @@ public class ImageRGB{
 		return hist;
 	}
 
-	
+	/** Retorna el histograma del canal verde de la imagen
+	 * @return
+	 */
 	public ArrayList<Long> getHistGreen(){
 		ArrayList<Long> hist = new ArrayList<Long>();
 		for (int i = 0; i <= 255; i++) {
@@ -192,6 +195,9 @@ public class ImageRGB{
 	}
 	
 	
+	/** Retorna el histograma del canal rojo de la imagen
+	 * @return
+	 */
 	public ArrayList<Long> getHistRed(){
 		ArrayList<Long> hist = new ArrayList<Long>();
 		for (int i = 0; i <= 255; i++) {
@@ -210,6 +216,10 @@ public class ImageRGB{
 		return hist;
 	}
 	
+	/** Este metodo retorna el histograma acumulado de un histograma dado
+	 * @param hist
+	 * @return
+	 */
 	public ArrayList<Long> getHistAcum(ArrayList<Long> hist){
 		ArrayList<Long> acum = new ArrayList<Long>();
 		for (int i = 0; i <= 255; i++) {
@@ -223,6 +233,10 @@ public class ImageRGB{
 	}
 	
 	
+	/** Este metodo retorna el brillo de un histograma dados
+	 * @param hist
+	 * @return
+	 */
 	public Double getBrillo(ArrayList<Long> hist) {
 		Long dummy = new Long(0);
 		for(int i = 0; i < hist.size(); ++i) {
@@ -232,6 +246,10 @@ public class ImageRGB{
 	}
 	
 	
+	/** Este metodo retorna el contraste de un histograma dado
+	 * @param hist
+	 * @return
+	 */
 	public Double getContraste(ArrayList<Long> hist) {
 		Double media = this.getBrillo(hist);
 		Double varianza = new Double(0);
@@ -241,6 +259,22 @@ public class ImageRGB{
 		varianza = varianza / (this.image.getHeight() * this.image.getWidth());
 		varianza = varianza - (media * media);
 		return Math.sqrt(varianza); //la raiz cuadrada de la varianza es la desviaciÃ³n tipica
+	}
+	
+	/** Retorna la entropia de un histograma dado
+	 * @param hist
+	 * @return
+	 */
+	public Double getEntropia(ArrayList<Long> hist) {
+		//H = âˆ‘ pi log(1/pi) = -âˆ‘ pi log(pi)
+		Double entropia = new Double(0);
+		for(int i = 0; i < hist.size(); i ++) {
+			Double probabilidad = new Double(new Double(hist.get(i)) / this.tamanio());
+			//para log en base 2 (Math.log(num) / Math.log(2))
+			if(probabilidad != 0)
+				entropia += probabilidad * (Math.log(1 / probabilidad) / Math.log(2));
+		}
+		return entropia;
 	}
 	
 	public Boolean getBlackAndWhite() {
@@ -290,7 +324,7 @@ public class ImageRGB{
 	
 	/** Dados 2 histogramas aplica sobre la imagen
 	 * @param histInit histograma inicial de la imagen
-	 * @param histTarget histograma final de la imágen
+	 * @param histTarget histograma final de la imï¿½gen
 	 */
 	void transformacionEspHistograma(ArrayList<Long> histInit, ArrayList<Long> histTarget) {
 		ConversionTable tabla = new ConversionTable();
@@ -314,21 +348,10 @@ public class ImageRGB{
 	 */
 	void equalizarHistograma() {
 		ArrayList<Long> histTarget = new ArrayList<Long>();
-		int totalProportion = 32896;//Sum de 1 a 256 (de 0 a 255) = 256+1
 		for(Long i = new Long(0); i < 256; i++) {
-			histTarget.add(i * this.tamanio() / 255);
+			histTarget.add(i * this.tamanio() / 255); // se crea el histograma objetivo ya equalizado
 		}
-		//chivato-------------------------------
-		/**
-		System.out.println("Actual:" + this.getHistAcum(this.getHistRed()));		
-		int cantPixels = 0;
-		for(int i = 0; i < histTarget.size(); i++) {
-			cantPixels += histTarget.get(i);
-		}
-		System.out.println("Target:" + histTarget + " " + cantPixels + " " + this.tamanio());
-		**/
-		//fin chivato-------------------------------
-		this.transformacionEspHistograma(this.getHistAcum(this.getHistRed()), histTarget);// se aplica sobre el histograma del rojo suponiendo que la imágen es en blanco y negro
+		this.transformacionEspHistograma(this.getHistAcum(this.getHistRed()), histTarget);// se aplica sobre el histograma del rojo suponiendo que la imï¿½gen es en blanco y negro
 	}
 	
 	/** Retorna el numero de pixeles de la imagen
@@ -336,6 +359,20 @@ public class ImageRGB{
 	 */
 	public Long tamanio() {
 		return new Long(this.image.getHeight() * this.image.getWidth());
+	}
+	
+	/** Retorna el color del pixel indicado en formato de cadena
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public String pixel(int x, int y) {
+		Color dummy = new Color(this.image.getRGB(x, y));
+		if(this.isBandW()) {
+			return new Integer(dummy.getRed()).toString();
+		} else {
+			return new Integer(dummy.getRed()).toString() + " " + new Integer(dummy.getGreen()).toString() + " " + new Integer(dummy.getBlue()).toString();
+		}
 	}
 	
 }
