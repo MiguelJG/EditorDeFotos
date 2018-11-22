@@ -6,9 +6,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="459.0" prefWidth="1358.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorHistograma">
+<AnchorPane prefHeight="459.0" prefWidth="1358.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ControladorHistograma">
    <children>
-      <BarChart fx:id="barChartR" layoutX="14.0" layoutY="14.0" prefHeight="414.0" prefWidth="813.0">
+      <BarChart fx:id="barChartR" layoutX="14.0" layoutY="14.0" prefHeight="414.0" prefWidth="813.0" stylesheets="@main.css">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
         </xAxis>
@@ -16,10 +16,10 @@
           <NumberAxis side="LEFT" />
         </yAxis>
       </BarChart>
-      <Label fx:id="tamano" layoutX="827.0" layoutY="140.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
-      <Label fx:id="Brillo" layoutX="827.0" layoutY="270.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
-      <Label fx:id="rango" layoutX="827.0" layoutY="203.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
-      <Label fx:id="entropia" layoutX="827.0" layoutY="338.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
-      <Label fx:id="tipo" layoutX="827.0" layoutY="71.0" prefHeight="54.0" prefWidth="484.0" text="Label" />
+      <Label fx:id="tamano" layoutX="827.0" layoutY="140.0" prefHeight="31.0" prefWidth="484.0" style="-fx-background-color: grey; -fx-background-radius: 10; -fx-text-alignment: justify;" text="Label" />
+      <Label fx:id="Brillo" layoutX="827.0" layoutY="221.0" prefHeight="31.0" prefWidth="484.0" style="-fx-background-color: grey; -fx-background-radius: 10; -fx-text-alignment: justify;" text="Label" />
+      <Label fx:id="rango" layoutX="827.0" layoutY="180.0" prefHeight="31.0" prefWidth="484.0" style="-fx-background-color: grey; -fx-background-radius: 10; -fx-text-alignment: justify;" text="Label" />
+      <Label fx:id="entropia" layoutX="827.0" layoutY="261.0" prefHeight="31.0" prefWidth="484.0" style="-fx-background-color: grey; -fx-background-radius: 10; -fx-text-alignment: justify;" text="Label" />
+      <Label fx:id="tipo" layoutX="827.0" layoutY="105.0" prefHeight="24.0" prefWidth="484.0" style="-fx-background-color: grey; -fx-background-radius: 10; -fx-text-alignment: justify;" text="Label" />
    </children>
 </AnchorPane>

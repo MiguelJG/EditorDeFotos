@@ -5,10 +5,10 @@
 <?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="170.0" prefWidth="529.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ImageControl">
+<AnchorPane prefHeight="62.0" prefWidth="316.0" style="-fx-background-color: #2A2E37;" stylesheets="@main.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ImageControl">
    <children>
-      <Button layoutY="2.0" mnemonicParsing="false" onAction="#chargeImage" text="Nueva Imagen" />
-      <SplitMenuButton layoutX="102.0" layoutY="2.0" mnemonicParsing="false" onAction="#histograma" text="Histograma">
+      <Button layoutX="8.0" layoutY="12.0" mnemonicParsing="false" onAction="#chargeImage" text="Nueva Imagen" />
+      <SplitMenuButton layoutX="158.0" layoutY="19.0" mnemonicParsing="false" onAction="#histograma" style="-fx-background-color: #2A2E37;" text="Histograma">
         <items>
             <MenuItem mnemonicParsing="false" onAction="#histogramaAcumulado" text="Histograma Acumulado" />
           <MenuItem mnemonicParsing="false" onAction="#duplicar" text="Duplicar" />
