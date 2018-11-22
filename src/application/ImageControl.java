@@ -5,15 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ImageControl {
@@ -26,9 +28,20 @@ public class ImageControl {
 	}
 	
 	public ImageControl() {
+	}
+	
+	public void deseleccionar() {
+		
+		for(ControladorImage cn: images) {
+			if(cn.select()) {
+				cn.setOff();
+				
+			}
+		}
 		
 	}
 	
+	//Botones業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業v
 	
 	public void chargeImage(ActionEvent event) throws IOException {
 		
@@ -43,40 +56,12 @@ public class ImageControl {
 		crearVentanaImagen(new Image(dir), dummy2);
 	}
 	
-	
-	
-	
-	private void crearVentanaImagen(Image im, String tipo) throws IOException {
-		
-		FXMLLoader loader =new FXMLLoader(getClass().getResource("Image_view.fxml"));
-		Parent root = loader.load();
-		ControladorImage con = loader.getController();
-		con.cargaImagen(im, tipo);
-		images.add(con);
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.show();
-		
-	}
-	
-	
-	public void deseleccionar() {
-		
-		for(ControladorImage cn: images) {
-			if(cn.select()) {
-				cn.setOff();
-				
-			}
-		}
-		
-	}
-	
 	public void crearPorPuntos() throws IOException {
 		
 		
 		for(ControladorImage cn: images) {
 			if(cn.select()) {
-				dummy(cn.getImageAWT());
+				PorPuntos(cn.getImageAWT());
 				deseleccionar();
 				break;
 				
@@ -87,33 +72,11 @@ public class ImageControl {
 		
 	}
 	
-	public void dummy(ImageRGB cn) throws IOException {
+	public void PorPuntos(ImageRGB cn) throws IOException {
 		FXMLLoader loader =new FXMLLoader(getClass().getResource("PorPuntosTramos.fxml"));
 		Parent root = loader.load();
 		PorPuntos con = loader.getController();
 		con.cargar(cn.getImageFX(),cn.getTipo());
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.show();
-	}
-	
-
-	
-	private void crearVentanaHistograma(ImageRGB im) throws IOException {
-		FXMLLoader loader =new FXMLLoader(getClass().getResource("Histograma.fxml"));
-		Parent root = loader.load();
-		ControladorHistograma con = loader.getController();
-		con.cargaHisto(im);
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.show();
-	}
-	
-	private void crearVentanaHistogramaAcumulado(ImageRGB im) throws IOException {
-		FXMLLoader loader =new FXMLLoader(getClass().getResource("HistogramaAcumulado.fxml"));
-		Parent root = loader.load();
-		ControladorHistograma con = loader.getController();
-		con.cargaHisto(im);
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.show();
@@ -141,6 +104,7 @@ public class ImageControl {
 		deseleccionar();
 		
 	}
+	
 	public void histogramaAcumulado() throws IOException {
 		
 		for(ControladorImage cn : images) {
@@ -165,8 +129,6 @@ public class ImageControl {
 		deseleccionar();
 	}
 	
-	
-	
 	public void blancoNegro(ActionEvent event) throws IOException {
 		for(ControladorImage cn : images) {
 			if(cn.select()) {
@@ -177,6 +139,39 @@ public class ImageControl {
 			}
 		}
 		deseleccionar();
+	}
+	
+	public void SaveImageB(ActionEvent event) throws IOException {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				ImageRGB dummy = new ImageRGB(cn.getIm(), cn.getTipo());
+				saveImage(dummy);
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	
+	//Cradores de ventanas 業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業
+	
+	private void crearVentanaHistograma(ImageRGB im) throws IOException {
+		FXMLLoader loader =new FXMLLoader(getClass().getResource("Histograma.fxml"));
+		Parent root = loader.load();
+		ControladorHistograma con = loader.getController();
+		con.cargaHisto(im);
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.show();
+	}
+	
+	private void crearVentanaHistogramaAcumulado(ImageRGB im) throws IOException {
+		FXMLLoader loader =new FXMLLoader(getClass().getResource("HistogramaAcumulado.fxml"));
+		Parent root = loader.load();
+		ControladorHistogramaAcumulado con = loader.getController();
+		con.cargaHisto(im);
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.show();
 	}
 	
 	private File abrirArchivo() {
@@ -193,8 +188,36 @@ public class ImageControl {
 		    }
 			return null;
 
-
 		}
+	
+	private void saveImage(ImageRGB pic) {
+		FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Image");
+
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(pic.getImageFX(),
+                    null), "png", file);
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+	}
+	
+	
+	private void crearVentanaImagen(Image im, String tipo) throws IOException {
+		
+		FXMLLoader loader =new FXMLLoader(getClass().getResource("Image_view.fxml"));
+		Parent root = loader.load();
+		ControladorImage con = loader.getController();
+		con.cargaImagen(im, tipo);
+		images.add(con);
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.show();
+		
+	}
 	
 	
 	

@@ -41,7 +41,6 @@ public class PorPuntos implements Initializable{
 	
 	public void cogerPuntos() throws IOException {
 		
-		
 		ImageRGB dummy = new ImageRGB(im, str);
 		dummy.transformacionLinealPorTramo(puntos.getText());
 		FXMLLoader loader =new FXMLLoader(getClass().getResource("Image_view.fxml"));
