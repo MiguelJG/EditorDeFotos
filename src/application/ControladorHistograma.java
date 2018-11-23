@@ -1,6 +1,7 @@
 package application;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -44,14 +45,17 @@ public class ControladorHistograma implements Initializable{
 	
 	@SuppressWarnings("unchecked")
 	public void cargaHisto(ImageRGB im) {
+		DecimalFormat df = new DecimalFormat("#.00");
 		if(!im.isBandW()) {
+			
 			ArrayList<Long> r = im.getHistRed();
 			ArrayList<Long> a =im.getHistBlue();
 			ArrayList<Long> v = im.getHistGreen();
 			tipo.setText("El tipo de fichero es: " + im.getTipo());
-			tamano.setText("El tama�o de la imagen es de " + im.getWidth() + "X" + im.getHeight());
+			tamano.setText("El tamanio de la imagen es de " + im.getWidth() + "X" + im.getHeight());
 			rango.setText("MinR[ " +im.min(r)+ " ], MaxR[ " +im.max(r)+ " ], MinG[ " +im.min(v)+ " ], MaxG[ " +im.max(v)+ " ], MinB[ " +im.max(v)+ " ], MaxB[ " +im.min(a)+ " ]" );
-			Brillo.setText("Brillo Red: " + im.getBrillo(r) + " , brillo Green: " + im.getBrillo(v) + " brillo Blue: " + im.getBrillo(a));
+			Brillo.setText("Brillo    Red: " + df.format(im.getBrillo(im.getHistRed())) + " , Green: " + df.format(im.getBrillo(im.getHistGreen())) + " , Blue: " + df.format(im.getBrillo(im.getHistBlue()))+
+						 "\nContraste Red: " + df.format(im.getContraste(im.getHistRed())) + " , Green: " + df.format(im.getContraste(im.getHistGreen())) + " , Blue: " + df.format(im.getContraste(im.getHistBlue())));
 			entropia.setText("Entro y pia");
 			XYChart.Series<String, Integer> rojos = new XYChart.Series<>();
 			rojos.setName("Red");
@@ -81,7 +85,7 @@ public class ControladorHistograma implements Initializable{
 			tipo.setText("El tipo de fichero es: " + im.getTipo());
 			tamano.setText("El tama�o de la imagen es de " + im.getWidth() + "X" + im.getHeight());
 			rango.setText("Min[ " +im.min(r)+ " ], Max[ " +im.max(r)+ " ]" );
-			Brillo.setText("Brillo: " + im.getBrillo(r));
+			Brillo.setText("Brillo: " + df.format(im.getBrillo(im.getHistRed())));
 			entropia.setText("Entropia: " + im.getEntropia(r));
 		}
 		

@@ -1,6 +1,7 @@
 package application;
 
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -45,14 +46,16 @@ public class ControladorHistogramaAcumulado implements Initializable{
 	@SuppressWarnings("unchecked")
 	public void cargaHisto(ImageRGB im) {
 		if(!im.isBandW()) {
+			DecimalFormat df = new DecimalFormat("#.00");
 			ArrayList<Long> r = im.getHistAcum(im.getHistRed());
 			ArrayList<Long> a =im.getHistAcum(im.getHistBlue());
 			ArrayList<Long> v = im.getHistAcum(im.getHistGreen());
 			tipo.setText("El tipo de fichero es: " + im.getTipo());
-			tamano.setText("El tama�o de la imagen es de " + im.getWidth() + "X" + im.getHeight());
+			tamano.setText("El tamnio de la imagen es de " + im.getWidth() + "X" + im.getHeight());
 			rango.setText("MinR[ " +im.min(r)+ " ], MaxR[ " +im.max(r)+ " ], MinG[ " +im.min(v)+ " ], MaxG[ " +im.max(v)+ " ], MinB[ " +im.max(v)+ " ], MaxB[ " +im.min(a)+ " ]" );
-			Brillo.setText("Brillo Red: " + im.getBrillo(r) + " , brillo Green: " + im.getBrillo(v) + " brillo Blue: " + im.getBrillo(a));
-			entropia.setText("Entropia: " + im.getEntropia(r));
+			Brillo.setText("Brillo    Red: " + df.format(im.getBrillo(im.getHistRed())) + " , Green: " + df.format(im.getBrillo(im.getHistGreen())) + " , Blue: " + df.format(im.getBrillo(im.getHistBlue()))+
+					 "\nContraste Red: " + df.format(im.getContraste(im.getHistRed())) + " , Green: " + df.format(im.getContraste(im.getHistGreen())) + " , Blue: " + df.format(im.getContraste(im.getHistBlue())));
+					entropia.setText("Entropia: " + im.getEntropia(r));
 			XYChart.Series<String, Integer> rojos = new XYChart.Series<>();
 			rojos.setName("Red");
 			for(int i = 0; i <= 255; i++) {
@@ -76,6 +79,7 @@ public class ControladorHistogramaAcumulado implements Initializable{
 			
 			barChartR.getData().addAll(verdes);
 		}else {
+			DecimalFormat df = new DecimalFormat("#.00");
 			ArrayList<Long> r = im.getHistAcum(im.getHistRed());
 			XYChart.Series<String, Integer> rojos = new XYChart.Series<>();
 			rojos.setName("Grises");
@@ -88,8 +92,8 @@ public class ControladorHistogramaAcumulado implements Initializable{
 			tipo.setText("El tipo de fichero es: " + im.getTipo());
 			tamano.setText("El tama�o de la imagen es de " + im.getWidth() + "X" + im.getHeight());
 			rango.setText("Min[ " +im.min(r)+ " ], Max[ " +im.max(r)+ " ]" );
-			Brillo.setText("Brillo: " + im.getBrillo(r));
-			entropia.setText("Entropia: " + im.getEntropia(r));
+			Brillo.setText("Brillo: " + df.format(im.getBrillo(im.getHistRed())));
+			entropia.setText("Entropia: " + im.getEntropia(im.getHistRed()));
 		}
 		
 	}
