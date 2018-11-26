@@ -226,8 +226,9 @@ public class ImageRGB{
 		for (int i = 0; i <= 255; i++) {
 			  acum.add(new Long(0));
 		}
-		hist.set(0,hist.get(0));
+		acum.set(0,hist.get(0));
 		for(int i = 1; i <= 255; i++) {
+		//	System.out.println(hist.get(i - 1));
 			acum.set(i, hist.get(i) + acum.get(i - 1));
 		}
 		return acum;
@@ -401,7 +402,7 @@ public class ImageRGB{
 	 */
 	public void umbralizar(int color1, int umbral, int color2) {
 		String tramos = new String();
-		tramos += "3-0-" + color1 + "-" + umbral + "-" + color1 + "-" + umbral + "-" + color2 + "-255-" + color2;
+		tramos += "3-0-" + color1 + "-" + umbral + "-" + color1 + "-" + (umbral+1) + "-" + color2 + "-255-" + color2;
 		this.transformacionLinealPorTramo(tramos);
 	}
 	

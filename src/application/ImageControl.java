@@ -71,16 +71,7 @@ public class ImageControl {
 		}
 		
 	}
-	
-	public void PorPuntos(ImageRGB cn) throws IOException {
-		FXMLLoader loader =new FXMLLoader(getClass().getResource("PorPuntosTramos.fxml"));
-		Parent root = loader.load();
-		PorPuntos con = loader.getController();
-		con.cargar(cn.getImageFX(),cn.getTipo());
-		Stage stage = new Stage();
-		stage.setScene(new Scene(root));
-		stage.show();
-	}
+
 	
 	public void duplicar() throws IOException {
 		
@@ -152,6 +143,21 @@ public class ImageControl {
 		deseleccionar();
 	}
 	
+	public void umbralB() {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				try {
+					umbralizar(cn.getImageAWT());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	
 	//Cradores de ventanas 業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業
 	
 	private void crearVentanaHistograma(ImageRGB im) throws IOException {
@@ -217,6 +223,28 @@ public class ImageControl {
 		stage.setScene(new Scene(root));
 		stage.show();
 		
+	}
+	
+	
+	
+	public void PorPuntos(ImageRGB cn) throws IOException {
+		FXMLLoader loader =new FXMLLoader(getClass().getResource("PorPuntosTramos.fxml"));
+		Parent root = loader.load();
+		PorPuntos con = loader.getController();
+		con.cargar(cn.getImageFX(),cn.getTipo());
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.show();
+	}
+	
+	public void umbralizar(ImageRGB im) throws IOException {
+		FXMLLoader loader =new FXMLLoader(getClass().getResource("Umbralizar.fxml"));
+		Parent root = loader.load();
+		ControladorUmbralizar con = loader.getController();
+		con.cargar(im.getImageFX(),im.getTipo());
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.show();
 	}
 	
 	
