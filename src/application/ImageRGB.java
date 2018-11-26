@@ -412,7 +412,7 @@ public class ImageRGB{
 	    Integer width2 = image2.getWidth();
 	    Integer height2 = image2.getHeight();
 	    if((width != width2) ||(height != height2)) {
-	    	System.err.println("Error, Los imagenes tiene tamaño diferentes");
+	    	System.err.println("Error, Los imagenes tiene tamaï¿½o diferentes");
 	    }
 	    //variable para almacenar el nuevo imagen de salida 
 	    BufferedImage dummy = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
@@ -433,21 +433,23 @@ public class ImageRGB{
 	    //
 	    return new ImageRGB(dummy);
 	}
-	/*NO entiedo como seguir xd*/
-	public void ajustar_brillo(ArrayList<Long> hist) {
-		Integer width = this.image.getWidth();
-	    Integer height = this.image.getHeight();
-	    Double brillo = this.getBrillo(hist);
-	    Double contraste = this.getBrillo(hist);
-	    Double v_out ;
+
+
+	/** Ajusta linealmente el brillo y el contraste de la imagen a los valores dados (suponiendo una imagen en BYN)
+	 * @param brillo
+	 * @param contraste
+	 */
+	public void ajustar_brillo(Double brillo, Double contraste) {
 	    ConversionTable table = new ConversionTable();
-	    for(int i = 0; i < width ; i++) {
-	    	for(int j = 0; j < height ; j++) {
-	    		// Vout = A* Vin + B,
-	    		v_out= brillo * i + contraste;
+	    for(int i = 0; i < this.image.getWidth() ; i++) {
+	    	for(int j = 0; j < this.image.getHeight(); j++) {
+	    		// Vout = A* Vin + B
+	    		Double v_out = brillo * i + contraste;
+	    		table.setPos(i, v_out.intValue(), v_out.intValue(), v_out.intValue());
 	    		/*como meter elemento en la talba?*/
 	    		}
 	    	}
+	    this.applyPointTransformation(table);
 	   	}
 	
 	}
