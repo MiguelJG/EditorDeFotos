@@ -405,7 +405,7 @@ public class ImageRGB{
 		this.transformacionLinealPorTramo(tramos);
 	}
 	
-	public BufferedImage diferencias(BufferedImage image2) {
+	public ImageRGB diferencias(BufferedImage image2) {
 		Integer width = this.image.getWidth();
 	    Integer height = this.image.getHeight();
 	    Integer width2 = image2.getWidth();
@@ -416,23 +416,21 @@ public class ImageRGB{
 	    //variable para almacenar el nuevo imagen de salida 
 	    BufferedImage dummy = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
 	    
-	    int diferencia;
-	    
 	    for(int i = 0; i < width ; i++) {
 	    	for(int j = 0; j < height ; j++) {
 	    		Color color_image2 = new Color(image2.getRGB(i,j));
 	    		Color color_image1 = new Color(this.image.getRGB(i,j));
 	    		//Resta de valor absoluto
-	    		diferencia = Math.abs(color_image1.getRed() - color_image2.getRed()); 
-	    		diferencia += Math.abs(color_image1.getGreen() - color_image2.getGreen());
-	    		diferencia += Math.abs(color_image1.getBlue() - color_image2.getBlue());
-	    		diferencia /= 3 ;//difrecia de valor entre 0 -255
+	    		int diferencia_roja = Math.abs(color_image1.getRed() - color_image2.getRed()); 
+	    		int diferencia_verde = Math.abs(color_image1.getGreen() - color_image2.getGreen());
+	    		int diferencia_azul = Math.abs(color_image1.getBlue() - color_image2.getBlue());
+	    		
 	    		//setter de la imagen
-	    		dummy.setRGB(i, j, diferencia);
+	    		dummy.setRGB(i, j, new Color(diferencia_roja,diferencia_verde,diferencia_azul).getRGB());
 	    	}
 	    }
-	    
-	    return dummy;
+	    //
+	    return new ImageRGB(dummy);
 	}
 	
 }
