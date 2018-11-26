@@ -20,6 +20,7 @@ import java.util.ArrayList;
  *
  */
 public class ImageRGB{
+	private static final Integer Integer = null;
 	private Boolean blackAndWhite;  //Boolean que indica si la foto estï¿½ en blanco y negro (true) o no (false)
 	private BufferedImage image;	//Imagen cargada en un buffer
 	private String tipo = new String();	
@@ -403,6 +404,36 @@ public class ImageRGB{
 		String tramos = new String();
 		tramos += "3-0-" + color1 + "-" + umbral + "-" + color1 + "-" + (umbral+1) + "-" + color2 + "-255-" + color2;
 		this.transformacionLinealPorTramo(tramos);
+	}
+	
+	public BufferedImage diferencias(BufferedImage image2) {
+		Integer width = this.image.getWidth();
+	    Integer height = this.image.getHeight();
+	    Integer width2 = image2.getWidth();
+	    Integer height2 = image2.getHeight();
+	    if((width != width2) ||(height != height2)) {
+	    	System.err.println("Error, Los imagenes tiene tamaño diferentes");
+	    }
+	    //variable para almacenar el nuevo imagen de salida 
+	    BufferedImage dummy = new BufferedImage(width, height,BufferedImage.TYPE_INT_RGB);
+	    
+	    int diferencia;
+	    
+	    for(int i = 0; i < width ; i++) {
+	    	for(int j = 0; j < height ; j++) {
+	    		Color color_image2 = new Color(image2.getRGB(i,j));
+	    		Color color_image1 = new Color(this.image.getRGB(i,j));
+	    		//Resta de valor absoluto
+	    		diferencia = Math.abs(color_image1.getRed() - color_image2.getRed()); 
+	    		diferencia += Math.abs(color_image1.getGreen() - color_image2.getGreen());
+	    		diferencia += Math.abs(color_image1.getBlue() - color_image2.getBlue());
+	    		diferencia /= 3 ;//difrecia de valor entre 0 -255
+	    		//setter de la imagen
+	    		dummy.setRGB(i, j, diferencia);
+	    	}
+	    }
+	    
+	    return dummy;
 	}
 	
 }
