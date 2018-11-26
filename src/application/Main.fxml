@@ -15,6 +15,7 @@
           <MenuItem mnemonicParsing="false" onAction="#blancoNegro" text="Blanco/Negro" />
             <MenuItem mnemonicParsing="false" onAction="#crearPorPuntos" text="PorTramos" />
             <MenuItem mnemonicParsing="false" onAction="#ecualizar" text="Ecualizar" />
+            <MenuItem mnemonicParsing="false" onAction="#umbralB" text="Umbralizar" />
         </items>
       </SplitMenuButton>
       <Button layoutX="272.0" layoutY="12.0" mnemonicParsing="false" onAction="#SaveImageB" text="Guardar Imagen" />
