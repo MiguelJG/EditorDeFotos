@@ -447,13 +447,21 @@ public class ImageRGB{
 	 */
 	public void ajustar_brillo(Double brillo, Double contraste) {
 	    ConversionTable table = new ConversionTable();
-	    for(int i = 0; i < this.image.getWidth() ; i++) {
-	    	for(int j = 0; j < this.image.getHeight(); j++) {
+	    
+	    Double contrasteV = getContraste(getHistRed());
+	    Double brilloV = getBrillo(getHistRed());
+	    
+	    Double a = contraste/contrasteV;
+	    Double b = ((brillo*contrasteV) - (contraste*brilloV))/contrasteV;
+	    
+	    for(int i = 0; i < table.tabla.size() ; i++) {
 	    		// Vout = A* Vin + B
-	    		Double v_out = brillo * i + contraste;
+	    		Double v_out = a * i + b;
+	    		if(v_out>255)
+	    			v_out=(double) 255;
 	    		table.setPos(i, v_out.intValue(), v_out.intValue(), v_out.intValue());
 	    		/*como meter elemento en la talba?*/
-	    		}
+	    		
 	    	}
 	    this.applyPointTransformation(table);
 	   	}
