@@ -373,6 +373,37 @@ public class ImageRGB{
 		}
 	}
 	
+	/** Retorna la subimagen comprendida en el rectangulo indicado por los puntos superior izquierdo e inferior derecho
+	 * @param x1
+	 * @param y1
+	 * @param x2
+	 * @param y2
+	 * @return
+	 */
+	public ImageRGB getSubImage(int x1, int y1, int x2, int y2) {
+		int WIDTH = x2 - x1 + 1;
+		int HEIGHT = y2 - y1 + 1;
+		BufferedImage dummy = new BufferedImage(WIDTH, HEIGHT,BufferedImage.TYPE_INT_RGB);
+		for(int i = x1; i <= x2; i++) {
+			for(int j = y1; j <= y2; j++) {
+				Color colorPixel = new Color(this.image.getRGB(i, j)); 
+				dummy.setRGB(colorPixel.getRed(), colorPixel.getGreen(), colorPixel.getBlue());
+			}
+		}
+		return new ImageRGB(dummy);
+	}
+	
+	/** Binariza la imagen a los 2 colores dados  con respecto al umbral seleccionado
+	 * @param color1
+	 * @param umbral
+	 * @param color2
+	 */
+	public void umbralizar(int color1, int umbral, int color2) {
+		String tramos = new String();
+		tramos += "3-0-" + color1 + "-" + umbral + "-" + color1 + "-" + umbral + "-" + color2 + "-255-" + color2;
+		this.transformacionLinealPorTramo(tramos);
+	}
+	
 }
 
 /** Clase que implementa una tabla de asignacion de valores a los pixeles 
