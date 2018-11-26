@@ -9,20 +9,24 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class ControladorUmbralizar implements Initializable{
+public class GetTextW implements Initializable{
 
 	@FXML
 	private TextArea puntos;
+	
+	@FXML
+	Button coger;
 	
 	Image im;
 	
 	String str;
 	
-	
+	int opcion;
 	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -31,10 +35,11 @@ public class ControladorUmbralizar implements Initializable{
 	}
 	
 	
-	public void cargar(Image image, String string) {
+	public void cargar(Image image, String string, int choice) {
 		
 		im = image;
 		str = string;
+		opcion = choice;
 		
 	}
 	
@@ -44,7 +49,16 @@ public class ControladorUmbralizar implements Initializable{
 		
 		String[] puntos =  this.puntos.getText().split("-");
 		
-		dummy.umbralizar(Integer.parseInt(puntos[0]), Integer.parseInt(puntos[1]),  Integer.parseInt(puntos[2]));
+		switch(opcion) {
+			case 1: dummy.umbralizar(Integer.parseInt(puntos[0]), Integer.parseInt(puntos[1]),  Integer.parseInt(puntos[2]));
+					break;
+			case 2: dummy.ajustar_brillo(Double.parseDouble(puntos[0]), Double.parseDouble(puntos[1]));
+					break;
+		}
+		
+		
+		
+		
 		FXMLLoader loader =new FXMLLoader(getClass().getResource("Image_view.fxml"));
 		Parent root = loader.load();
 		ControladorImage con = loader.getController();
@@ -53,6 +67,8 @@ public class ControladorUmbralizar implements Initializable{
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.show();
+		Stage cerrar = (Stage) coger.getScene().getWindow();
+		cerrar.close();
 		
 		
 	}

@@ -23,6 +23,12 @@ public class ImageRGB{
 	private static final Integer Integer = null;
 	private Boolean blackAndWhite;  //Boolean que indica si la foto est� en blanco y negro (true) o no (false)
 	private BufferedImage image;	//Imagen cargada en un buffer
+	
+	public BufferedImage getImage() {
+		return image;
+	}
+
+
 	private String tipo = new String();	
 	
 	public String getTipo() {
@@ -46,7 +52,7 @@ public class ImageRGB{
 	public int max(ArrayList<Long> hist) {		
 		int max = 0;
 		for(int i = 0; i <= 255 ; i++) {
-			if(hist.get(i) >= hist.get(max))
+			if(hist.get(i) > 0)
 				max = i;
 		}		
 		return max;		
@@ -58,8 +64,8 @@ public class ImageRGB{
 	 */
 	public int min(ArrayList<Long> hist) {
 		int min = 0;
-		for(int i = 0; i <= 255 ; i++) {
-			if(hist.get(i) <= hist.get(min))
+		for(int i = 255; i >=0 ; i--) {
+			if(hist.get(i) > 0)
 				min = i;
 		}		
 		return min;

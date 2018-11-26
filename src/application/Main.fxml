@@ -16,6 +16,9 @@
             <MenuItem mnemonicParsing="false" onAction="#crearPorPuntos" text="PorTramos" />
             <MenuItem mnemonicParsing="false" onAction="#ecualizar" text="Ecualizar" />
             <MenuItem mnemonicParsing="false" onAction="#umbralB" text="Umbralizar" />
+            <MenuItem mnemonicParsing="false" onAction="#diferencia" text="Diferencia" />
+            <MenuItem mnemonicParsing="false" onAction="#cambiarBC" text="Cambiar Brillo" />
+            <MenuItem mnemonicParsing="false" onAction="#histogramaiguala" text="Cambiar Histograma A" />
         </items>
       </SplitMenuButton>
       <Button layoutX="272.0" layoutY="12.0" mnemonicParsing="false" onAction="#SaveImageB" text="Guardar Imagen" />

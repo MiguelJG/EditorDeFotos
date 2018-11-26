@@ -34,7 +34,7 @@ public class ControladorImage implements Initializable{
 	
 	public void moverRaton(MouseEvent event) {
 		
-		lb.setText("PosX: " + (int) event.getX() + " PosY: " + (int) event.getY());
+		lb.setText("PosX: " + (int) event.getX() + " PosY: " + (int) event.getY() + " Color: "+ imageAWT.pixel((int)event.getX(), (int)event.getY()));
 		
 	}
 	

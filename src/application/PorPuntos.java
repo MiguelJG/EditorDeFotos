@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -18,6 +19,9 @@ public class PorPuntos implements Initializable{
 
 	@FXML
 	private TextArea puntos;
+	
+	@FXML
+	Button coger;
 	
 	Image im;
 	
@@ -51,7 +55,8 @@ public class PorPuntos implements Initializable{
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.show();
-		
+		Stage cerrar = (Stage) coger.getScene().getWindow();
+		cerrar.close();
 		
 	}
 	

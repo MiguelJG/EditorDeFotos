@@ -30,15 +30,12 @@ public class ImageControl {
 	public ImageControl() {
 	}
 	
-	public void deseleccionar() {
-		
+	public static void deseleccionar() {
 		for(ControladorImage cn: images) {
 			if(cn.select()) {
 				cn.setOff();
-				
 			}
 		}
-		
 	}
 	
 	//Botones業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業v
@@ -65,14 +62,34 @@ public class ImageControl {
 				deseleccionar();
 				break;
 				
+			}
+		}
+		
+	}
+	public void diferencia() throws IOException {
+		for(ControladorImage cn: images) {
+			if(cn.select()) {
+				crearSeleccionarImagen(1, cn.getImageAWT());
+				deseleccionar();
+				break;
 				
+			}
+		}
+		
+	}
+	
+	public void histogramaiguala() throws IOException {
+		for(ControladorImage cn: images) {
+			if(cn.select()) {
+				crearSeleccionarImagen(2, cn.getImageAWT());
+				deseleccionar();
+				break;
 				
 			}
 		}
 		
 	}
 
-	
 	public void duplicar() throws IOException {
 		
 		for(ControladorImage cn : images) {
@@ -147,7 +164,7 @@ public class ImageControl {
 		for(ControladorImage cn : images) {
 			if(cn.select()) {
 				try {
-					umbralizar(cn.getImageAWT());
+					getTextW(cn.getImageAWT(), 1);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -157,6 +174,22 @@ public class ImageControl {
 		}
 		deseleccionar();
 	}
+	
+	public void cambiarBC() {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				try {
+					getTextW(cn.getImageAWT(), 2);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	
 	
 	//Cradores de ventanas 業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業
 	
@@ -237,15 +270,34 @@ public class ImageControl {
 		stage.show();
 	}
 	
-	public void umbralizar(ImageRGB im) throws IOException {
-		FXMLLoader loader =new FXMLLoader(getClass().getResource("Umbralizar.fxml"));
+	private void crearSeleccionarImagen(int i, ImageRGB im) throws IOException {
+		
+		FXMLLoader loader =new FXMLLoader(getClass().getResource("SeleccionarImagen.fxml"));
 		Parent root = loader.load();
-		ControladorUmbralizar con = loader.getController();
-		con.cargar(im.getImageFX(),im.getTipo());
+		ControladorSeleccionarImagen con = loader.getController();
+		con.cargar(i, im);
+		Stage stage = new Stage();
+		stage.setScene(new Scene(root));
+		stage.show();
+		
+	}
+	
+	public void getTextW(ImageRGB im, int i) throws IOException {
+		FXMLLoader loader =new FXMLLoader(getClass().getResource("GetText.fxml"));
+		Parent root = loader.load();
+		GetTextW con = loader.getController();
+		con.cargar(im.getImageFX(),im.getTipo(),i);
 		Stage stage = new Stage();
 		stage.setScene(new Scene(root));
 		stage.show();
 	}
+	
+
+	public static List<ControladorImage> getImages() {
+		return images;
+	}
+
+
 	
 	
 	

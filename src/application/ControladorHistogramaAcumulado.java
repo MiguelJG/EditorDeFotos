@@ -92,7 +92,7 @@ public class ControladorHistogramaAcumulado implements Initializable{
 			tipo.setText("El tipo de fichero es: " + im.getTipo());
 			tamano.setText("El tama�o de la imagen es de " + im.getWidth() + "X" + im.getHeight());
 			rango.setText("Min[ " +im.min(r)+ " ], Max[ " +im.max(r)+ " ]" );
-			Brillo.setText("Brillo: " + df.format(im.getBrillo(im.getHistRed())));
+			Brillo.setText("Brillo: " + df.format(im.getBrillo(im.getHistRed())) + ", Contraste" + df.format(im.getContraste(im.getHistRed())));
 			entropia.setText("Entropia: " + im.getEntropia(im.getHistRed()));
 		}
 		
