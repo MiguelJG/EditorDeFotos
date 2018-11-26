@@ -433,8 +433,25 @@ public class ImageRGB{
 	    //
 	    return new ImageRGB(dummy);
 	}
+	/*NO entiedo como seguir xd*/
+	public void ajustar_brillo(ArrayList<Long> hist) {
+		Integer width = this.image.getWidth();
+	    Integer height = this.image.getHeight();
+	    Double brillo = this.getBrillo(hist);
+	    Double contraste = this.getBrillo(hist);
+	    Double v_out ;
+	    ConversionTable table = new ConversionTable();
+	    for(int i = 0; i < width ; i++) {
+	    	for(int j = 0; j < height ; j++) {
+	    		// Vout = A* Vin + B,
+	    		v_out= brillo * i + contraste;
+	    		/*como meter elemento en la talba?*/
+	    		}
+	    	}
+	   	}
 	
-}
+	}
+	
 
 /** Clase que implementa una tabla de asignacion de valores a los pixeles 
  * (la tabla que usamos para no aplicar las transformaciones mas veces de las necesarias)
