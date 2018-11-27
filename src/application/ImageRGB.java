@@ -395,7 +395,8 @@ public class ImageRGB{
 		for(int i = x1; i <= x2; i++) {
 			for(int j = y1; j <= y2; j++) {
 				Color colorPixel = new Color(this.image.getRGB(i, j)); 
-				dummy.setRGB(colorPixel.getRed(), colorPixel.getGreen(), colorPixel.getBlue());
+				//dummy.setRGB(colorPixel.getRed(), colorPixel.getGreen(), colorPixel.getBlue());
+				dummy.setRGB(i-x1, j-y1, colorPixel.getRGB());
 			}
 		}
 		return new ImageRGB(dummy);

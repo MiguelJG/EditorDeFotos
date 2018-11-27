@@ -215,7 +215,7 @@ public class ImageControl {
 	
 	private File abrirArchivo() {
 		  
-		  JFileChooser chooser = new JFileChooser();
+		 JFileChooser chooser = new JFileChooser();
 		  
 		  FileNameExtensionFilter filter = new FileNameExtensionFilter(
 		        "PNG & GIF & RAW Images", "pnf", "gif", "raw");
