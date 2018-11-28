@@ -20,7 +20,6 @@ import java.util.ArrayList;
  *
  */
 public class ImageRGB{
-	private static final Integer Integer = null;
 	private Boolean blackAndWhite;  //Boolean que indica si la foto estï¿½ en blanco y negro (true) o no (false)
 	private BufferedImage image;	//Imagen cargada en un buffer
 	
@@ -463,11 +462,24 @@ public class ImageRGB{
 	    		table.setPos(i, v_out.intValue(), v_out.intValue(), v_out.intValue());
 	    		/*como meter elemento en la talba?*/
 	    		
-	    	}
+	    }
 	    this.applyPointTransformation(table);
-	   	}
-	
 	}
+	
+	/** Metodo que aplica sobre la imágen una correccion gamma
+	 * @param gamma
+	 */
+	public void ajusteGamma(Double gamma) {
+		ConversionTable table = new ConversionTable();
+		for(int i = 0; i < table.tabla.size() ; i++) {
+    		Double valor = Funciones.exponencial(new Double(i / 255), gamma);
+    		int valorInt = new Double (valor * 255).intValue();
+    		table.setPos(i, valorInt, valorInt, valorInt);
+    	}
+		this.applyPointTransformation(table);
+	}
+	
+}
 	
 
 /** Clase que implementa una tabla de asignacion de valores a los pixeles 
@@ -573,6 +585,13 @@ class Funciones{
 			throw new Error("Valores de los puntos de la funcion incorrectos");
 		}
 		return Math.round  ((((y - y1) * (x2 - x1))/(y2 - y1)) + x1);
+	}
+	
+	public static Double exponencial(Double base, Double potencia) {
+		if(potencia < 0) {
+			throw new Error("Exponente menor que 0");
+		}
+		return Math.pow(base, potencia);
 	}
 	
 	/** Dados 2 puntos x1,y1/x2,y2 retorna la pendiente de la recta que conforman
