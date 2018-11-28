@@ -19,6 +19,7 @@
             <MenuItem mnemonicParsing="false" onAction="#diferencia" text="Diferencia" />
             <MenuItem mnemonicParsing="false" onAction="#cambiarBC" text="Cambiar Brillo" />
             <MenuItem mnemonicParsing="false" onAction="#histogramaiguala" text="Cambiar Histograma A" />
+            <MenuItem mnemonicParsing="false" onAction="#gamma" text="Gamma" />
         </items>
       </SplitMenuButton>
       <Button layoutX="272.0" layoutY="12.0" mnemonicParsing="false" onAction="#SaveImageB" text="Guardar Imagen" />

@@ -55,6 +55,8 @@ public class ControladorImage implements Initializable{
 		this.tipo = tipo;
 		im = imag;
 		imageAWT = new ImageRGB(im, tipo);
+		imagen.setFitHeight(imageAWT.getHeight());
+		imagen.setFitWidth(imageAWT.getWidth());
 		imagen.setImage(imag);
 	}
 	
@@ -112,6 +114,8 @@ public class ControladorImage implements Initializable{
 	
 		rx2 = (int) event.getX();
 		ry2 = (int) event.getY();
+
+		
 		if(roi) {
 			ImageRGB dummy = new ImageRGB(imageAWT.getSubImage(rx1, ry1, rx2, ry2).getImageFX(), imageAWT.getTipo());
 			crearVentana(dummy);

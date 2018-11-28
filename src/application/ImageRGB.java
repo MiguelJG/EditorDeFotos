@@ -472,10 +472,16 @@ public class ImageRGB{
 	public void ajusteGamma(Double gamma) {
 		ConversionTable table = new ConversionTable();
 		for(int i = 0; i < table.tabla.size() ; i++) {
-    		Double valor = Funciones.exponencial(new Double(i / 255), gamma);
-    		int valorInt = new Double (valor * 255).intValue();
-    		table.setPos(i, valorInt, valorInt, valorInt);
+			Double valor = new Double(0);
+			try {
+				valor = Funciones.exponencial(new Double((double)i / 255), gamma);
+			} catch (Error err) {
+				System.out.println(err);
+			}
+    		int valorInt = new Double ((double)valor * 255).intValue();
+    		table.setPos(i, valorInt, valorInt, valorInt);    		
     	}
+		System.out.println("Transformacion :" + table.tabla.toString());
 		this.applyPointTransformation(table);
 	}
 	

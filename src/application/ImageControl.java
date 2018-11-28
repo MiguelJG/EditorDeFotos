@@ -191,6 +191,22 @@ public class ImageControl {
 	}
 	
 	
+	public void gamma() {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				try {
+					getTextW(cn.getImageAWT(), 3);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	
+	
 	//Cradores de ventanas 業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業
 	
 	private void crearVentanaHistograma(ImageRGB im) throws IOException {

@@ -54,6 +54,7 @@ public class GetTextW implements Initializable{
 					break;
 			case 2: dummy.ajustar_brillo(Double.parseDouble(puntos[0]), Double.parseDouble(puntos[1]));
 					break;
+			case 3: dummy.ajusteGamma(Double.parseDouble(puntos[0]));
 		}
 		
 		
