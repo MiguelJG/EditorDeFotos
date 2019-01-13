@@ -466,7 +466,7 @@ public class ImageRGB{
 	    this.applyPointTransformation(table);
 	}
 	
-	/** Metodo que aplica sobre la im�gen una correccion gamma
+	/** Metodo que aplica sobre la im�gen una correccion gamma
 	 * @param gamma
 	 */
 	public void ajusteGamma(Double gamma) {
@@ -483,6 +483,80 @@ public class ImageRGB{
     	}
 		System.out.println("Transformacion :" + table.tabla.toString());
 		this.applyPointTransformation(table);
+	}
+	
+	
+	/** Esta funcion reescala la a un nuevo tamaño pasado por parámetro usando la seleccion del veciono más próximo
+	 * @param newWidth
+	 * @param newHeigth
+	 */
+	public ImageRGB escaladoVecinoProximo(int newWidth, int newHeigth) {
+		double facW =  newWidth / this.image.getWidth(); //FACTOR DE ESCALADO DE LA ANCHURA
+		double facH =  newHeigth / this.image.getHeight(); //FACTOR DE ESCALADO DE LA ALTURA
+		BufferedImage EscImage = new BufferedImage(newWidth, newHeigth, BufferedImage.TYPE_INT_RGB); 		
+	    for(int i = 0; i < EscImage.getWidth(); i++) {
+	    	for(int j = 0; j < EscImage.getHeight(); j++) {
+	    		double x =  Math.round(i / facW);
+	    		double y = Math.round(j / facH);
+	    		Color dummy = new Color(image.getRGB((int)x, (int)y));	
+	    		EscImage.setRGB(i, j, dummy.getRGB());
+	    	}
+	    }
+	    return new ImageRGB(EscImage);
+	}
+	
+	
+	/** Esta funcion reescala la a un nuevo tamaño pasado por parámetro usandouna interpolacion de los colores a usar
+	 * @param newWidth
+	 * @param newHeigth
+	 */
+	public ImageRGB escaladoInterpolacion(int newWidth, int newHeigth) {
+		double facW =  newWidth / this.image.getWidth(); //FACTOR DE ESCALADO DE LA ANCHURA
+		double facH =  newHeigth / this.image.getHeight(); //FACTOR DE ESCALADO DE LA ALTURA
+		BufferedImage EscImage = new BufferedImage(newWidth, newHeigth, BufferedImage.TYPE_INT_RGB); 		
+	    for(int i = 0; i < EscImage.getWidth(); i++) {
+	    	for(int j = 0; j < EscImage.getHeight(); j++) {
+	    		double x =  i / facW; // valor
+	    		double y = j / facH;
+	    		double X =  (int)(i / facW); // truncamos la operacion para obtener los valores x e y para calculas p y q
+	    		double Y = (int)(j / facH);
+	    		double p = x - X;
+	    		double q = y - Y;
+	    		Color A = new Color(image.getRGB((int)X, (int)Y + 1));
+	    		Color B = new Color(image.getRGB((int)X + 1, (int)Y + 1));	
+	    		Color C = new Color(image.getRGB((int)X, (int)Y));	
+	    		Color D = new Color(image.getRGB((int)X + 1, (int)Y));	
+	    		// C+(D-C)p+(A-C)q+(B+C-A-D)pq
+	    		
+	    		Color CDCp = colorAddition(C, colorScale(colorSub(D, C), p));	
+	    		Color ACq = colorScale(colorSub(A, C), q);
+	    		Color BCADpq = colorScale(colorScale(colorAddition(B, colorSub(C, colorSub(A, D))), p), q);
+	    		Color dummy = colorAddition(colorAddition(CDCp, ACq), BCADpq);
+	    		EscImage.setRGB(i, j, dummy.getRGB());
+	    	}
+	    }
+	    return new ImageRGB(EscImage);
+	}
+	
+	private static Color colorScale(Color c, double scale) {
+	    int r = Math.min(255, (int) (c.getRed() * scale));
+	    int g = Math.min(255, (int) (c.getGreen() * scale));
+	    int b = Math.min(255, (int) (c.getBlue() * scale));
+	    return new Color(r,g,b);
+	}
+	
+	private static Color colorAddition(Color c1, Color c2) {
+	    int r = Math.min(255, c1.getRed() + c2.getRed());
+	    int g = Math.min(255, c1.getGreen() + c2.getGreen());
+	    int b = Math.min(255, c1.getBlue() + c2.getBlue());
+	    return new Color(r,g,b);
+	}
+	
+	private static Color colorSub(Color c1, Color c2) {
+	    int r = Math.max(0, c1.getRed() - c2.getRed());
+	    int g = Math.max(0, c1.getGreen() - c2.getGreen());
+	    int b = Math.max(0, c1.getBlue() - c2.getBlue());
+	    return new Color(r,g,b);
 	}
 	
 }
