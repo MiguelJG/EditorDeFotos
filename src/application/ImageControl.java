@@ -149,6 +149,37 @@ public class ImageControl {
 		deseleccionar();
 	}
 	
+	public void espejoHorizontal(ActionEvent event) throws IOException {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				ImageRGB dummy = cn.getImageAWT().escpejoHorizontal();
+				crearVentanaImagen(dummy.getImageFX(), dummy.getTipo());
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	public void espejoVertical(ActionEvent event) throws IOException {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				ImageRGB dummy = cn.getImageAWT().escpejoVertical();
+				crearVentanaImagen(dummy.getImageFX(), dummy.getTipo());
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	public void traspuesta(ActionEvent event) throws IOException {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				ImageRGB dummy = cn.getImageAWT().traspuesta();
+				crearVentanaImagen(dummy.getImageFX(), dummy.getTipo());
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	
 	public void SaveImageB(ActionEvent event) throws IOException {
 		for(ControladorImage cn : images) {
 			if(cn.select()) {

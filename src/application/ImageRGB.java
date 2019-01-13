@@ -601,6 +601,40 @@ public class ImageRGB{
 		return new ImageRGB(EscImage);
 	}
 	
+	public ImageRGB rotation(BufferedImage imagen,int grado) {
+
+        double angulo = Math.toRadians(grado); //parsedouble convertir el int en double
+        double sin = Math.sin(angulo);
+        double cos = Math.cos(angulo);
+        int w = this.image.getWidth();
+        int h = this.image.getHeight();
+        //https://stackoverflow.com/questions/5789239/calculate-largest-rectangle-in-a-rotated-rectangle
+        //
+        //Represents an image with 8-bit RGBA color components packed into integer pixels.
+        //"deformar" los gráficos -> AffineTransform
+        //AffineTransform affi = new AffineTransform();
+        double x_rotate = 0.5 * (w - 1);
+        double h_rotate = 0.5 * (h - 1);        
+        int newW = (int) Math.floor(w * cos - h * sin + x_rotate);
+        int newH = (int) Math.floor(h * cos + w * sin + h_rotate);
+        BufferedImage imangen_rotado = new BufferedImage(newW , newH ,BufferedImage.TYPE_INT_ARGB);        
+        for(int i=0 ; i < newW; i++) {
+            for(int j=0 ; j < newH; j++) {
+                double a = i - x_rotate;
+                double b = j - h_rotate;
+                int newx = (int) Math.floor(a * cos - h * sin + x_rotate);
+                int newy = (int) Math.floor(b * cos + w * sin + h_rotate);
+                if(newx >= 0 && newx < newW && newy < newH && newy >= 0) {
+                Color colorPixel = new Color(this.image.getRGB(newx, newy));
+                 	imangen_rotado.setRGB(newx, newy, colorPixel.getRGB());
+                } else {
+                	imangen_rotado.setRGB(newx, newy, Color.BLACK.getRGB());
+                }
+             }
+          }
+         return new ImageRGB(imangen_rotado);
+    }
+	
 }
 	
 
