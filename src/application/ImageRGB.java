@@ -520,14 +520,13 @@ public class ImageRGB{
 	    		double y = j / facH;
 	    		double X =  (int)(i / facW); // truncamos la operacion para obtener los valores x e y para calculas p y q
 	    		double Y = (int)(j / facH);
-	    		double p = x - X;
+	    		double p = x - X;	//se calculan la p y la q
 	    		double q = y - Y;
-	    		Color A = new Color(image.getRGB((int)X, (int)Y + 1));
+	    		Color A = new Color(image.getRGB((int)X, (int)Y + 1)); //Se realizan las operaciones para ver que color es
 	    		Color B = new Color(image.getRGB((int)X + 1, (int)Y + 1));	
 	    		Color C = new Color(image.getRGB((int)X, (int)Y));	
 	    		Color D = new Color(image.getRGB((int)X + 1, (int)Y));	
-	    		// C+(D-C)p+(A-C)q+(B+C-A-D)pq
-	    		
+	    		// C+(D-C)p+(A-C)q+(B+C-A-D)pq	    		
 	    		Color CDCp = colorAddition(C, colorScale(colorSub(D, C), p));	
 	    		Color ACq = colorScale(colorSub(A, C), q);
 	    		Color BCADpq = colorScale(colorScale(colorAddition(B, colorSub(C, colorSub(A, D))), p), q);
@@ -557,6 +556,49 @@ public class ImageRGB{
 	    int g = Math.max(0, c1.getGreen() - c2.getGreen());
 	    int b = Math.max(0, c1.getBlue() - c2.getBlue());
 	    return new Color(r,g,b);
+	}
+	
+	/** Este metodo retorna la imagen espejo Horizontal
+	 * @return
+	 */
+	public ImageRGB escpejoHorizontal() {
+		BufferedImage EscImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB); 		
+	    for(int i = 0; i < EscImage.getWidth(); i++) {
+	    	for(int j = 0; j < EscImage.getHeight(); j++) {
+	    		Color dummy = new Color(image.getRGB(image.getWidth() - 1 - i, j));	
+	    		EscImage.setRGB(i, j, dummy.getRGB());
+	    	}
+	    }
+	    return new ImageRGB(EscImage);
+	}
+	
+	
+	/** Este metodo retorna la imagen espejo vertical
+	 * @return
+	 */
+	public ImageRGB escpejoVertical() {
+		BufferedImage EscImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB); 		
+	    for(int i = 0; i < EscImage.getWidth(); i++) {
+	    	for(int j = 0; j < EscImage.getHeight(); j++) {
+	    		Color dummy = new Color(image.getRGB(i, image.getHeight() - 1 - j));	
+	    		EscImage.setRGB(i, j, dummy.getRGB());
+	    	}
+	    }
+	    return new ImageRGB(EscImage);
+	}
+	
+	/** Este método retorna la transpuesta de una imagen
+	 * @return
+	 */
+	public ImageRGB traspuesta() {
+		BufferedImage EscImage = new BufferedImage(image.getHeight(), image.getWidth(), BufferedImage.TYPE_INT_RGB); 
+		for(int i = 0; i < EscImage.getWidth(); i++) {
+	    	for(int j = 0; j < EscImage.getHeight(); j++) {
+	    		Color dummy = new Color(image.getRGB(j,i));	
+	    		EscImage.setRGB(i, j, dummy.getRGB());
+	    	}
+	    }
+		return new ImageRGB(EscImage);
 	}
 	
 }
