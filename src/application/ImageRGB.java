@@ -625,7 +625,7 @@ public class ImageRGB{
                 int newx = (int) Math.floor(a * cos - h * sin + x_rotate);
                 int newy = (int) Math.floor(b * cos + w * sin + h_rotate);
                 if(newx >= 0 && newx < newW && newy < newH && newy >= 0) {
-                Color colorPixel = new Color(this.image.getRGB(newx, newy));
+                	Color colorPixel = new Color(this.image.getRGB(newx, newy));
                  	imangen_rotado.setRGB(newx, newy, colorPixel.getRGB());
                 } else {
                 	imangen_rotado.setRGB(newx, newy, Color.BLACK.getRGB());
