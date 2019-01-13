@@ -28,6 +28,8 @@
             <MenuItem mnemonicParsing="false" onAction="#espejoVertical" text="Espejo Vertical" />
             <MenuItem mnemonicParsing="false" onAction="#espejoHorizontal" text="Espejo Horizontal" />
             <MenuItem mnemonicParsing="false" onAction="#traspuesta" text="Traspuesta" />
+            <MenuItem mnemonicParsing="false" onAction="#escaladoVecinoProximo" text="Escalado vecino Proximo" />
+            <MenuItem mnemonicParsing="false" onAction="#escaladoInterpolacional" text="Escalado Interpolacional" />
          </items>
       </SplitMenuButton>
    </children>

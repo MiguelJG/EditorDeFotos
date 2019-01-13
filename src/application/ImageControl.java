@@ -236,6 +236,35 @@ public class ImageControl {
 		}
 		deseleccionar();
 	}
+	public void escaladoInterpolacional() {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				try {
+					getTextW(cn.getImageAWT(), 4);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	
+	public void escaladoVecinoProximo() {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				try {
+					getTextW(cn.getImageAWT(), 5);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
+		deseleccionar();
+	}
 	
 	
 	//Cradores de ventanas 業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業

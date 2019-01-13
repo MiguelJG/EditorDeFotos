@@ -498,6 +498,19 @@ public class ImageRGB{
 	    	for(int j = 0; j < EscImage.getHeight(); j++) {
 	    		double x =  Math.round(i / facW);
 	    		double y = Math.round(j / facH);
+	    		if(x >= EscImage.getWidth()) {
+                    x = EscImage.getWidth() - 1;
+                }
+                if(x < 0) {
+                    x = 0;
+                }
+                if(y >= EscImage.getHeight()) {
+                    y = EscImage.getHeight() - 1;
+                }
+                if(y < 0) {
+                    y = 0;
+                }
+                System.out.println(x + " <--- x || y ---> " + y);
 	    		Color dummy = new Color(image.getRGB((int)x, (int)y));	
 	    		EscImage.setRGB(i, j, dummy.getRGB());
 	    	}
@@ -522,6 +535,18 @@ public class ImageRGB{
 	    		double Y = (int)(j / facH);
 	    		double p = x - X;	//se calculan la p y la q
 	    		double q = y - Y;
+	    		if(x >= EscImage.getWidth()) {
+                    x = EscImage.getWidth() - 1;
+                }
+                if(x < 0) {
+                    x = 0;
+                }
+                if(y >= EscImage.getHeight()) {
+                    y = EscImage.getHeight() - 1;
+                }
+                if(y < 0) {
+                    y = 0;
+                }
 	    		Color A = new Color(image.getRGB((int)X, (int)Y + 1)); //Se realizan las operaciones para ver que color es
 	    		Color B = new Color(image.getRGB((int)X + 1, (int)Y + 1));	
 	    		Color C = new Color(image.getRGB((int)X, (int)Y));	
