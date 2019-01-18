@@ -490,32 +490,49 @@ public class ImageRGB{
 	 * @param newWidth
 	 * @param newHeigth
 	 */
-	public ImageRGB escaladoVecinoProximo(int newWidth, int newHeigth) {
-		double facW =  newWidth / this.image.getWidth(); //FACTOR DE ESCALADO DE LA ANCHURA
-		double facH =  newHeigth / this.image.getHeight(); //FACTOR DE ESCALADO DE LA ALTURA
+	public void escaladoVecinoProximo(int newWidth, int newHeigth) {
+		double facW =  (double)newWidth / this.image.getWidth(); //FACTOR DE ESCALADO DE LA ANCHURA
+		double facH =  (double)newHeigth / this.image.getHeight(); //FACTOR DE ESCALADO DE LA ALTURA
 		BufferedImage EscImage = new BufferedImage(newWidth, newHeigth, BufferedImage.TYPE_INT_RGB); 		
 	    for(int i = 0; i < EscImage.getWidth(); i++) {
 	    	for(int j = 0; j < EscImage.getHeight(); j++) {
-	    		double x =  Math.round(i / facW);
-	    		double y = Math.round(j / facH);
-	    		if(x >= EscImage.getWidth()) {
-                    x = EscImage.getWidth() - 1;
-                }
-                if(x < 0) {
-                    x = 0;
-                }
-                if(y >= EscImage.getHeight()) {
-                    y = EscImage.getHeight() - 1;
-                }
-                if(y < 0) {
-                    y = 0;
-                }
-                System.out.println(x + " <--- x || y ---> " + y);
-	    		Color dummy = new Color(image.getRGB((int)x, (int)y));	
+	    		double x =  Math.round((double)i / facW);
+	    		double y = Math.round((double)j / facH);
+	    		if(newWidth >= this.image.getWidth()) {
+		    		if(x >= EscImage.getWidth()) {
+	                    x = EscImage.getWidth() - 1;
+	                }
+	                if(x < 0) {
+	                    x = 0;
+	                }
+	                if(y >= EscImage.getHeight()) {
+	                    y = EscImage.getHeight() - 1;
+	                }
+	                if(y < 0) {
+	                    y = 0;
+	                }
+	    		}
+	    		if(newWidth < this.image.getWidth()) {
+		    		if(x >= this.image.getWidth()) {
+	                    x = this.image.getWidth() - 1;
+	                }
+	                if(x < 0) {
+	                    x = 0;
+	                }
+	                if(y >= this.image.getWidth()) {
+	                    y = this.image.getWidth() - 1;
+	                }
+	                if(y < 0) {
+	                    y = 0;
+	                }
+	    		}
+                System.out.println(x + " <--- x facx -->" + facW + " || " + facH +" <--- facH y ---> " + y);
+                System.out.println("----");
+	    		Color dummy = new Color(image.getRGB((int)(long)x, (int)(long)y));	
 	    		EscImage.setRGB(i, j, dummy.getRGB());
 	    	}
 	    }
-	    return new ImageRGB(EscImage);
+	    this.image = EscImage;
 	}
 	
 	
@@ -523,30 +540,32 @@ public class ImageRGB{
 	 * @param newWidth
 	 * @param newHeigth
 	 */
-	public ImageRGB escaladoInterpolacion(int newWidth, int newHeigth) {
-		double facW =  newWidth / this.image.getWidth(); //FACTOR DE ESCALADO DE LA ANCHURA
-		double facH =  newHeigth / this.image.getHeight(); //FACTOR DE ESCALADO DE LA ALTURA
+	public void escaladoInterpolacion(int newWidth, int newHeigth) {
+		double facW =  (double)newWidth / this.image.getWidth(); //FACTOR DE ESCALADO DE LA ANCHURA
+		double facH =  (double)newHeigth / this.image.getHeight(); //FACTOR DE ESCALADO DE LA ALTURA
 		BufferedImage EscImage = new BufferedImage(newWidth, newHeigth, BufferedImage.TYPE_INT_RGB); 		
 	    for(int i = 0; i < EscImage.getWidth(); i++) {
 	    	for(int j = 0; j < EscImage.getHeight(); j++) {
-	    		double x =  i / facW; // valor
-	    		double y = j / facH;
-	    		double X =  (int)(i / facW); // truncamos la operacion para obtener los valores x e y para calculas p y q
-	    		double Y = (int)(j / facH);
+	    		double x =  (double)i / facW; // valor
+	    		double y = (double)j / facH;
+	    		double X =  (double)((int)((double)i / facW)); // truncamos la operacion para obtener los valores x e y para calculas p y q
+	    		double Y = (double)((int)((double)j / facH));
 	    		double p = x - X;	//se calculan la p y la q
 	    		double q = y - Y;
-	    		if(x >= EscImage.getWidth()) {
-                    x = EscImage.getWidth() - 1;
-                }
-                if(x < 0) {
-                    x = 0;
-                }
-                if(y >= EscImage.getHeight()) {
-                    y = EscImage.getHeight() - 1;
-                }
-                if(y < 0) {
-                    y = 0;
-                }
+                System.out.println((int)X + " <--- x facx -->" + facW + " || " + facH +" <--- facH y ---> " + (int)Y);
+                System.out.println("----");
+                	if((int)X + 1 >= this.image.getWidth() - 1) {
+	                    X = this.image.getWidth() - 2;
+	                }
+	                if((int)X + 1 < 0) {
+	                    X = 0;
+	                }
+	                if((int)Y + 1 >= this.image.getHeight() - 1) {
+	                    Y = this.image.getHeight() - 2;
+	                }
+	                if((int)Y + 1 < 0) {
+	                    Y = 0;
+	                }
 	    		Color A = new Color(image.getRGB((int)X, (int)Y + 1)); //Se realizan las operaciones para ver que color es
 	    		Color B = new Color(image.getRGB((int)X + 1, (int)Y + 1));	
 	    		Color C = new Color(image.getRGB((int)X, (int)Y));	
@@ -559,7 +578,7 @@ public class ImageRGB{
 	    		EscImage.setRGB(i, j, dummy.getRGB());
 	    	}
 	    }
-	    return new ImageRGB(EscImage);
+	    this.image = EscImage;
 	}
 	
 	private static Color colorScale(Color c, double scale) {
