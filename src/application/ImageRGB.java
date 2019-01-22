@@ -577,81 +577,100 @@ public class ImageRGB{
 	
 	
 	public void rotation(int rot) {
-		double angulo = Math.toRadians(rot);
-		double sin = Math.sin(angulo);
-        double cos = Math.cos(angulo);
-        int w = this.image.getWidth();
-        int h = this.image.getHeight();
-        int newW = Math.abs((int) Math.floor(w * cos + h * sin)); // entero más grande que es menor o igual
-        int newH = Math.abs((int) Math.floor(h * cos + w * sin));
-        BufferedImage imangen_rotado = new BufferedImage(newW , newH ,BufferedImage.TYPE_INT_ARGB);
-        double x_rotate = 0.5 * (w - 1); // nuevo centro de fila
-        double y_rotate = 0.5 * (h - 1); // nuevo centro de columna
-        double punto_p_x =  x_rotate * cos - y_rotate * sin;
-        double punto_p_y =  x_rotate * cos - y_rotate * sin;
-        for(int i=0 ; i < newW; i++) {
-            for(int j=0 ; j < newH; j++) {
-                double a = i - x_rotate;
-                double b = j - y_rotate;
-                int newx = (int) ((int) +a * cos - b * sin + punto_p_x);
-                int newy = (int) ((int) +a * sin + b * cos + punto_p_y);
-                System.out.print(i + " < i  j > " + j + "  ||  " + newx + " < newX newY > " + newy);
-                if(newx >= 0 && newx < w && newy < h && newy >=0) {
-                	System.out.print("  Dentro ");
-                	Color colorPixel = new Color(this.image.getRGB(newx, newy)); 
-                	imangen_rotado.setRGB(i, j, colorPixel.getRGB());
-                } else
-                	imangen_rotado.setRGB(i, j, new Color(0,0,0).getRGB() );
+//		double angulo = rot;
+//		double sin = Math.sin(angulo);
+//        double cos = Math.cos(angulo);
+//        int w = this.image.getWidth();
+//        int h = this.image.getHeight();
+//        int newW = Math.abs((int) Math.floor(w * cos + h * sin)); // entero más grande que es menor o igual
+//        int newH = Math.abs((int) Math.floor(h * cos + w * sin));
+//        BufferedImage imangen_rotado = new BufferedImage(newW , newH ,BufferedImage.TYPE_INT_ARGB);
+//        double x_rotate = 0.5 * (w - 1); // nuevo centro de fila
+//        double y_rotate = 0.5 * (h - 1); // nuevo centro de columna
+//        double punto_p_x =  x_rotate * cos - y_rotate * sin;
+//        double punto_p_y =  x_rotate * cos - y_rotate * sin;
+//        for(int i=0 ; i < newW; i++) {
+//            for(int j=0 ; j < newH; j++) {
+//                double a = i - x_rotate;
+//                double b = j - y_rotate;
+//                int newx = (int) ((int) +a * cos - b * sin + punto_p_x);
+//                int newy = (int) ((int) +a * sin + b * cos + punto_p_y);
+//                System.out.print(i + " < i  j > " + j + "  ||  " + newx + " < newX newY > " + newy);
+//                if(newx >= 0 && newx < w && newy < h && newy >=0) {
+//                	System.out.print("  Dentro ");
+//                	Color colorPixel = new Color(this.image.getRGB(newx, newy)); 
+//                	imangen_rotado.setRGB(i, j, colorPixel.getRGB());
+//                } else
+//                	imangen_rotado.setRGB(i, j, new Color(0,0,0).getRGB() );
+//                
+//                
+//                System.out.println();
+//            }
+//            
+//        }
+//        
+//        
+//        image = imangen_rotado;
+			/*
+			 * A-----B
+			 * 
+			 * C-----D
+			 * 
+			 * */
+    		double angulo = Math.toRadians(rot);
+            int w = this.image.getWidth();
+            int h = this.image.getHeight();
+            double aX = 0; double aY = 0;
+    		double bX = hpx(w - 1, 0, angulo); double bY = hpy(w - 1, 0, angulo);
+    		double cX = hpx(0, h - 1, angulo); double cY = hpy(0, h - 1, angulo);
+    		double dX = hpx(w - 1, h - 1, angulo); double dY = hpy(w - 1, h - 1, angulo);
+    		int pAx = (int) Math.floor(Math.min(Math.min(aX, bX), Math.min(cX, dX)));
+    		int pBx = (int) Math.ceil(Math.max(Math.max(aX, bX), Math.max(cX, dX)));
+    		int pIy = (int) Math.floor(Math.min(Math.min(aY, bY), Math.min(cY, dY)));
+    		int pDy = (int) Math.ceil(Math.max(Math.max(aY, bY), Math.max(cY, dY)));
+    		int ancho = pBx - pAx + 1;
+    		int alto = pDy - pIy + 1;
+
+            BufferedImage imangen_rotado = new BufferedImage(ancho , alto ,BufferedImage.TYPE_INT_ARGB);
+
+            for(int i=0 ; i < ancho; i++) {
+                for(int j=0 ; j < alto; j++) {
+                    int newx = (int) tpx(i + pAx, j + pIy, angulo);
+                    int newy = (int) tpy(i + pAx, j + pIy, angulo);
+                    
+                    if(newx >= 0 && newx < w && newy < h && newy >=0) {
+                    	
+                    	Color colorPixel = new Color(this.image.getRGB(newx, newy)); 
+                    	imangen_rotado.setRGB(i, j, colorPixel.getRGB());
+                    } 
+                    
+                    
                 
+                }
                 
-                System.out.println();
             }
             
-        }
-        
-        
-        image = imangen_rotado;
+            
 
-//	        double angulo = Math.toRadians(rot); //parsedouble convertir el string en double
-//	        double sin = Math.sin(angulo);
-//	        double cos = Math.cos(angulo);
-//	        int w = this.image.getWidth();
-//	        int h = this.image.getHeight();
-//	        //https://stackoverflow.com/questions/5789239/calculate-largest-rectangle-in-a-rotated-rectangle
-//	        //
-//	        int newW = (int) Math.floor(w * cos + h * sin); // entero más grande que es menor o igual
-//	        int newH = (int) Math.floor(h * cos + w * sin);
-//	        //Represents an image with 8-bit RGBA color components packed into integer pixels.
-//	        BufferedImage imangen_rotado = new BufferedImage(newW , newH ,BufferedImage.TYPE_INT_ARGB);
-//
-//	        //"deformar" los gráficos -> AffineTransform
-//	        //AffineTransform affi = new AffineTransform();
-//
-//	        double x_rotate = 0.5 * (w - 1); // nuevo centro de fila
-//	        double y_rotate = 0.5 * (h - 1); // nuevo centro de columna
-//	        // el punto p de la imagen 
-//	        //http://datagenetics.com/blog/august32013/index.html
-//	        double punto_p_x =  x_rotate * cos + y_rotate * sin + w;
-//
-//	        double punto_p_y =  x_rotate * cos - y_rotate * sin + h;
-//
-//	        for(int i=0 ; i < newW; i++) {
-//	            for(int j=0 ; j < newH; j++) {
-//	                double a = i - x_rotate;
-//	                double b = j - y_rotate;
-//	                int newx = (int) Math.floor(i * cos - j * sin + punto_p_x);
-//	                int newy = (int) Math.floor(i * cos + j * sin + punto_p_y);
-//
-//	                if(newx >= 0 && newx < w && newy < h && newy >=0) {
-//	                	System.out.print("  Dentro ");
-//	                	Color colorPixel = new Color(this.image.getRGB(newx, newy)); 
-//	                	imangen_rotado.setRGB(i, j, colorPixel.getRGB());
-//	                } 
-//	            }
-//	        }
-//	         image = imangen_rotado;
-	    
-        
+            
+            
+            image = imangen_rotado;
+	}
+	
+	public double hpx(int x, int y, double angulo) {
+		return x * Math.cos(angulo) - y * Math.sin(angulo);
+	}
+	
+	public double hpy(int x, int y, double angulo) {
+		return x * Math.sin(angulo) + y * Math.cos(angulo);
+	}
+	
+	public double tpx(int xPrima, int yPrima, double angulo) {
+		return xPrima * Math.cos(angulo) + yPrima * Math.sin(angulo);
+	}
+	
+	public double tpy(int xPrima, int yPrima, double angulo) {
+		return -xPrima * Math.sin(angulo) + yPrima * Math.cos(angulo);
 	}
 	
 	private static Color colorScale(Color c, double scale) {
