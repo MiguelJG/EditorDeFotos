@@ -499,14 +499,14 @@ public class ImageRGB{
 	    		double x =  Math.round((double)i / facW);
 	    		double y = Math.round((double)j / facH);
 	    		if(newWidth >= this.image.getWidth()) {
-		    		if(x >= EscImage.getWidth()) {
-	                    x = EscImage.getWidth() - 1;
+		    		if(x >= this.image.getWidth()) {
+	                    x = this.image.getWidth() - 1;
 	                }
 	                if(x < 0) {
 	                    x = 0;
 	                }
-	                if(y >= EscImage.getHeight()) {
-	                    y = EscImage.getHeight() - 1;
+	                if(y >= this.image.getHeight()) {
+	                    y = this.image.getHeight() - 1;
 	                }
 	                if(y < 0) {
 	                    y = 0;
@@ -546,39 +546,112 @@ public class ImageRGB{
 		BufferedImage EscImage = new BufferedImage(newWidth, newHeigth, BufferedImage.TYPE_INT_RGB); 		
 	    for(int i = 0; i < EscImage.getWidth(); i++) {
 	    	for(int j = 0; j < EscImage.getHeight(); j++) {
-	    		double x =  (double)i / facW; // valor
-	    		double y = (double)j / facH;
-	    		double X =  (double)((int)((double)i / facW)); // truncamos la operacion para obtener los valores x e y para calculas p y q
-	    		double Y = (double)((int)((double)j / facH));
-	    		double p = x - X;	//se calculan la p y la q
-	    		double q = y - Y;
-                System.out.println((int)X + " <--- x facx -->" + facW + " || " + facH +" <--- facH y ---> " + (int)Y);
-                System.out.println("----");
-                	if((int)X + 1 >= this.image.getWidth() - 1) {
-	                    X = this.image.getWidth() - 2;
-	                }
-	                if((int)X + 1 < 0) {
-	                    X = 0;
-	                }
-	                if((int)Y + 1 >= this.image.getHeight() - 1) {
-	                    Y = this.image.getHeight() - 2;
-	                }
-	                if((int)Y + 1 < 0) {
-	                    Y = 0;
-	                }
-	    		Color A = new Color(image.getRGB((int)X, (int)Y + 1)); //Se realizan las operaciones para ver que color es
-	    		Color B = new Color(image.getRGB((int)X + 1, (int)Y + 1));	
-	    		Color C = new Color(image.getRGB((int)X, (int)Y));	
-	    		Color D = new Color(image.getRGB((int)X + 1, (int)Y));	
-	    		// C+(D-C)p+(A-C)q+(B+C-A-D)pq	    		
-	    		Color CDCp = colorAddition(C, colorScale(colorSub(D, C), p));	
-	    		Color ACq = colorScale(colorSub(A, C), q);
-	    		Color BCADpq = colorScale(colorScale(colorAddition(B, colorSub(C, colorSub(A, D))), p), q);
-	    		Color dummy = colorAddition(colorAddition(CDCp, ACq), BCADpq);
-	    		EscImage.setRGB(i, j, dummy.getRGB());
+	    		
+	            int xA, yA, xB, yB, xC, yC, xD, yD;
+	    		xA = xC = (int) Math.floor(i / facW);
+	    		xB = xD = Math.min((int) Math.ceil(i / facW), this.image.getWidth() - 1);
+	    		yA = yB = Math.min((int) Math.ceil(j / facH), this.image.getHeight() - 1);
+	    		yC = yD = (int) Math.floor(j / facH);
+	    		
+	    		// (p,q) --> posición de P relativa a C
+	    		double p = i / facW - xC;
+	    		double q = j / facH - yC;
+	    		Color A = new Color(image.getRGB(xA, yA)); //Se realizan las operaciones para ver que color es
+	    		Color B = new Color(image.getRGB(xB, yB));	
+	    		Color C = new Color(image.getRGB(xC, yC));	
+	    		Color D = new Color(image.getRGB(xD, yD));
+	    		
+	    		int red = (int) Math.round(C.getRed() + (D.getRed() - C.getRed()) * p + (A.getRed() - C.getRed()) * q
+	    				+ (B.getRed() - A.getRed() - D.getRed() + C.getRed()) * p * q);
+	    		int green = (int) Math.round(C.getGreen() + (D.getGreen() - C.getGreen()) * p + (A.getGreen() - C.getGreen()) * q
+	    				+ (B.getGreen() - A.getGreen() - D.getGreen() + C.getGreen()) * p * q);
+	    		int blue = (int) Math.round(C.getBlue() + (D.getBlue() - C.getBlue()) * p + (A.getBlue() - C.getBlue()) * q
+	    				+ (B.getBlue() - A.getBlue() - D.getBlue() + C.getBlue()) * p * q);
+	    		
+
+	    		EscImage.setRGB(i, j, new Color(red,green,blue).getRGB());
 	    	}
 	    }
 	    this.image = EscImage;
+	}
+	
+	
+	public void rotation(int rot) {
+		double angulo = Math.toRadians(rot);
+		double sin = Math.sin(angulo);
+        double cos = Math.cos(angulo);
+        int w = this.image.getWidth();
+        int h = this.image.getHeight();
+        int newW = Math.abs((int) Math.floor(w * cos + h * sin)); // entero más grande que es menor o igual
+        int newH = Math.abs((int) Math.floor(h * cos + w * sin));
+        BufferedImage imangen_rotado = new BufferedImage(newW , newH ,BufferedImage.TYPE_INT_ARGB);
+        double x_rotate = 0.5 * (w - 1); // nuevo centro de fila
+        double y_rotate = 0.5 * (h - 1); // nuevo centro de columna
+        double punto_p_x =  x_rotate * cos - y_rotate * sin;
+        double punto_p_y =  x_rotate * cos - y_rotate * sin;
+        for(int i=0 ; i < newW; i++) {
+            for(int j=0 ; j < newH; j++) {
+                double a = i - x_rotate;
+                double b = j - y_rotate;
+                int newx = (int) ((int) +a * cos - b * sin + punto_p_x);
+                int newy = (int) ((int) +a * sin + b * cos + punto_p_y);
+                System.out.print(i + " < i  j > " + j + "  ||  " + newx + " < newX newY > " + newy);
+                if(newx >= 0 && newx < w && newy < h && newy >=0) {
+                	System.out.print("  Dentro ");
+                	Color colorPixel = new Color(this.image.getRGB(newx, newy)); 
+                	imangen_rotado.setRGB(i, j, colorPixel.getRGB());
+                } else
+                	imangen_rotado.setRGB(i, j, new Color(0,0,0).getRGB() );
+                
+                
+                System.out.println();
+            }
+            
+        }
+        
+        
+        image = imangen_rotado;
+
+//	        double angulo = Math.toRadians(rot); //parsedouble convertir el string en double
+//	        double sin = Math.sin(angulo);
+//	        double cos = Math.cos(angulo);
+//	        int w = this.image.getWidth();
+//	        int h = this.image.getHeight();
+//	        //https://stackoverflow.com/questions/5789239/calculate-largest-rectangle-in-a-rotated-rectangle
+//	        //
+//	        int newW = (int) Math.floor(w * cos + h * sin); // entero más grande que es menor o igual
+//	        int newH = (int) Math.floor(h * cos + w * sin);
+//	        //Represents an image with 8-bit RGBA color components packed into integer pixels.
+//	        BufferedImage imangen_rotado = new BufferedImage(newW , newH ,BufferedImage.TYPE_INT_ARGB);
+//
+//	        //"deformar" los gráficos -> AffineTransform
+//	        //AffineTransform affi = new AffineTransform();
+//
+//	        double x_rotate = 0.5 * (w - 1); // nuevo centro de fila
+//	        double y_rotate = 0.5 * (h - 1); // nuevo centro de columna
+//	        // el punto p de la imagen 
+//	        //http://datagenetics.com/blog/august32013/index.html
+//	        double punto_p_x =  x_rotate * cos + y_rotate * sin + w;
+//
+//	        double punto_p_y =  x_rotate * cos - y_rotate * sin + h;
+//
+//	        for(int i=0 ; i < newW; i++) {
+//	            for(int j=0 ; j < newH; j++) {
+//	                double a = i - x_rotate;
+//	                double b = j - y_rotate;
+//	                int newx = (int) Math.floor(i * cos - j * sin + punto_p_x);
+//	                int newy = (int) Math.floor(i * cos + j * sin + punto_p_y);
+//
+//	                if(newx >= 0 && newx < w && newy < h && newy >=0) {
+//	                	System.out.print("  Dentro ");
+//	                	Color colorPixel = new Color(this.image.getRGB(newx, newy)); 
+//	                	imangen_rotado.setRGB(i, j, colorPixel.getRGB());
+//	                } 
+//	            }
+//	        }
+//	         image = imangen_rotado;
+	    
+        
 	}
 	
 	private static Color colorScale(Color c, double scale) {
@@ -645,39 +718,6 @@ public class ImageRGB{
 		return new ImageRGB(EscImage);
 	}
 	
-	public ImageRGB rotation(BufferedImage imagen,int grado) {
-
-        double angulo = Math.toRadians(grado); //parsedouble convertir el int en double
-        double sin = Math.sin(angulo);
-        double cos = Math.cos(angulo);
-        int w = this.image.getWidth();
-        int h = this.image.getHeight();
-        //https://stackoverflow.com/questions/5789239/calculate-largest-rectangle-in-a-rotated-rectangle
-        //
-        //Represents an image with 8-bit RGBA color components packed into integer pixels.
-        //"deformar" los grÃ¡ficos -> AffineTransform
-        //AffineTransform affi = new AffineTransform();
-        double x_rotate = 0.5 * (w - 1);
-        double h_rotate = 0.5 * (h - 1);        
-        int newW = (int) Math.floor(w * cos - h * sin + x_rotate);
-        int newH = (int) Math.floor(h * cos + w * sin + h_rotate);
-        BufferedImage imangen_rotado = new BufferedImage(newW , newH ,BufferedImage.TYPE_INT_ARGB);        
-        for(int i=0 ; i < newW; i++) {
-            for(int j=0 ; j < newH; j++) {
-                double a = i - x_rotate;
-                double b = j - h_rotate;
-                int newx = (int) Math.floor(a * cos - h * sin + x_rotate);
-                int newy = (int) Math.floor(b * cos + w * sin + h_rotate);
-                if(newx >= 0 && newx < newW && newy < newH && newy >= 0) {
-                Color colorPixel = new Color(this.image.getRGB(newx, newy));
-                 	imangen_rotado.setRGB(newx, newy, colorPixel.getRGB());
-                } else {
-                	imangen_rotado.setRGB(newx, newy, Color.BLACK.getRGB());
-                }
-             }
-          }
-         return new ImageRGB(imangen_rotado);
-    }
 	
 }
 	

@@ -55,10 +55,13 @@ public class GetTextW implements Initializable{
 			case 2: dummy.ajustar_brillo(Double.parseDouble(puntos[0]), Double.parseDouble(puntos[1]));
 					break;
 			case 3: dummy.ajusteGamma(Double.parseDouble(puntos[0]));
-			
+					break;
 			case 4: dummy.escaladoInterpolacion(Integer.parseInt(puntos[0]), Integer.parseInt(puntos[1]));
-			
+					break;
 			case 5: dummy.escaladoVecinoProximo(Integer.parseInt(puntos[0]), Integer.parseInt(puntos[1]));
+					break;
+			case 6: dummy.rotation(Integer.parseInt(puntos[0]));
+					break;
 		}
 		
 		
