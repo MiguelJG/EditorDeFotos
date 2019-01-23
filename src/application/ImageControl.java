@@ -281,6 +281,21 @@ public class ImageControl {
 		deseleccionar();
 	}
 	
+	public void rotadoMalo() {
+		for(ControladorImage cn : images) {
+			if(cn.select()) {
+				try {
+					getTextW(cn.getImageAWT(), 7);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
+		deseleccionar();
+	}
+	
 	
 	//Cradores de ventanas 業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業業
 	

@@ -60,7 +60,9 @@ public class GetTextW implements Initializable{
 					break;
 			case 5: dummy.escaladoVecinoProximo(Integer.parseInt(puntos[0]), Integer.parseInt(puntos[1]));
 					break;
-			case 6: dummy.rotation(Integer.parseInt(puntos[0]));
+			case 6: dummy.rotationBuena(Integer.parseInt(puntos[0]));
+					break;
+			case 7: dummy.rotationMalo(Integer.parseInt(puntos[0]));
 					break;
 		}
 		

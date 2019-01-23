@@ -526,8 +526,6 @@ public class ImageRGB{
 	                    y = 0;
 	                }
 	    		}
-                System.out.println(x + " <--- x facx -->" + facW + " || " + facH +" <--- facH y ---> " + y);
-                System.out.println("----");
 	    		Color dummy = new Color(image.getRGB((int)(long)x, (int)(long)y));	
 	    		EscImage.setRGB(i, j, dummy.getRGB());
 	    	}
@@ -547,129 +545,135 @@ public class ImageRGB{
 	    for(int i = 0; i < EscImage.getWidth(); i++) {
 	    	for(int j = 0; j < EscImage.getHeight(); j++) {
 	    		
-	            int xA, yA, xB, yB, xC, yC, xD, yD;
-	    		xA = xC = (int) Math.floor(i / facW);
-	    		xB = xD = Math.min((int) Math.ceil(i / facW), this.image.getWidth() - 1);
-	    		yA = yB = Math.min((int) Math.ceil(j / facH), this.image.getHeight() - 1);
-	    		yC = yD = (int) Math.floor(j / facH);
-	    		
-	    		// (p,q) --> posición de P relativa a C
-	    		double p = i / facW - xC;
-	    		double q = j / facH - yC;
-	    		Color A = new Color(image.getRGB(xA, yA)); //Se realizan las operaciones para ver que color es
-	    		Color B = new Color(image.getRGB(xB, yB));	
-	    		Color C = new Color(image.getRGB(xC, yC));	
-	    		Color D = new Color(image.getRGB(xD, yD));
-	    		
-	    		int red = (int) Math.round(C.getRed() + (D.getRed() - C.getRed()) * p + (A.getRed() - C.getRed()) * q
-	    				+ (B.getRed() - A.getRed() - D.getRed() + C.getRed()) * p * q);
-	    		int green = (int) Math.round(C.getGreen() + (D.getGreen() - C.getGreen()) * p + (A.getGreen() - C.getGreen()) * q
-	    				+ (B.getGreen() - A.getGreen() - D.getGreen() + C.getGreen()) * p * q);
-	    		int blue = (int) Math.round(C.getBlue() + (D.getBlue() - C.getBlue()) * p + (A.getBlue() - C.getBlue()) * q
-	    				+ (B.getBlue() - A.getBlue() - D.getBlue() + C.getBlue()) * p * q);
+	           
 	    		
 
-	    		EscImage.setRGB(i, j, new Color(red,green,blue).getRGB());
+	    		EscImage.setRGB(i, j, hayarColor(i/facW, j/facH).getRGB());
 	    	}
 	    }
 	    this.image = EscImage;
 	}
 	
+	public Color hayarColor(double x, double y) {
+		
+		int aX, aY, bX, bY, cX, yC, xD, yD;
+        aX = cX = (int) Math.floor(x);
+        bX = xD = Math.min((int) Math.ceil(x), this.image.getWidth() - 1);
+ 		aY = bY = Math.min((int) Math.ceil(y), this.image.getHeight() - 1);
+ 		yC = yD = (int) Math.floor(y);
+ 		
+ 		double p = x - cX;
+ 		double q = y - yC;
+ 		Color A = new Color(image.getRGB(aX, aY)); 
+ 		Color B = new Color(image.getRGB(bX, bY));	
+ 		Color C = new Color(image.getRGB(cX, yC));	
+ 		Color D = new Color(image.getRGB(xD, yD));
+ 		
+ 		int red = (int) Math.round(C.getRed() + (D.getRed() - C.getRed()) * p + (A.getRed() - C.getRed()) * q
+ 				+ (B.getRed() - A.getRed() - D.getRed() + C.getRed()) * p * q);
+ 		int green = (int) Math.round(C.getGreen() + (D.getGreen() - C.getGreen()) * p + (A.getGreen() - C.getGreen()) * q
+ 				+ (B.getGreen() - A.getGreen() - D.getGreen() + C.getGreen()) * p * q);
+ 		int blue = (int) Math.round(C.getBlue() + (D.getBlue() - C.getBlue()) * p + (A.getBlue() - C.getBlue()) * q
+ 				+ (B.getBlue() - A.getBlue() - D.getBlue() + C.getBlue()) * p * q);
+ 		
+
+		return new Color(red,green,blue);
+	}
+
 	
-	public void rotation(int rot) {
-//		double angulo = rot;
-//		double sin = Math.sin(angulo);
-//        double cos = Math.cos(angulo);
-//        int w = this.image.getWidth();
-//        int h = this.image.getHeight();
-//        int newW = Math.abs((int) Math.floor(w * cos + h * sin)); // entero más grande que es menor o igual
-//        int newH = Math.abs((int) Math.floor(h * cos + w * sin));
-//        BufferedImage imangen_rotado = new BufferedImage(newW , newH ,BufferedImage.TYPE_INT_ARGB);
-//        double x_rotate = 0.5 * (w - 1); // nuevo centro de fila
-//        double y_rotate = 0.5 * (h - 1); // nuevo centro de columna
-//        double punto_p_x =  x_rotate * cos - y_rotate * sin;
-//        double punto_p_y =  x_rotate * cos - y_rotate * sin;
-//        for(int i=0 ; i < newW; i++) {
-//            for(int j=0 ; j < newH; j++) {
-//                double a = i - x_rotate;
-//                double b = j - y_rotate;
-//                int newx = (int) ((int) +a * cos - b * sin + punto_p_x);
-//                int newy = (int) ((int) +a * sin + b * cos + punto_p_y);
-//                System.out.print(i + " < i  j > " + j + "  ||  " + newx + " < newX newY > " + newy);
-//                if(newx >= 0 && newx < w && newy < h && newy >=0) {
-//                	System.out.print("  Dentro ");
-//                	Color colorPixel = new Color(this.image.getRGB(newx, newy)); 
-//                	imangen_rotado.setRGB(i, j, colorPixel.getRGB());
-//                } else
-//                	imangen_rotado.setRGB(i, j, new Color(0,0,0).getRGB() );
-//                
-//                
-//                System.out.println();
-//            }
-//            
-//        }
-//        
-//        
-//        image = imangen_rotado;
+	public void rotationBuena(int rot) {
 			/*
 			 * A-----B
 			 * 
 			 * C-----D
 			 * 
-			 * */
+			 */
     		double angulo = Math.toRadians(rot);
             int w = this.image.getWidth();
             int h = this.image.getHeight();
             double aX = 0; double aY = 0;
-    		double bX = hpx(w - 1, 0, angulo); double bY = hpy(w - 1, 0, angulo);
-    		double cX = hpx(0, h - 1, angulo); double cY = hpy(0, h - 1, angulo);
-    		double dX = hpx(w - 1, h - 1, angulo); double dY = hpy(w - 1, h - 1, angulo);
-    		int pAx = (int) Math.floor(Math.min(Math.min(aX, bX), Math.min(cX, dX)));
-    		int pBx = (int) Math.ceil(Math.max(Math.max(aX, bX), Math.max(cX, dX)));
-    		int pIy = (int) Math.floor(Math.min(Math.min(aY, bY), Math.min(cY, dY)));
-    		int pDy = (int) Math.ceil(Math.max(Math.max(aY, bY), Math.max(cY, dY)));
-    		int ancho = pBx - pAx + 1;
-    		int alto = pDy - pIy + 1;
+    		double bX = TDx(w - 1, 0, angulo); double bY = TDy(w - 1, 0, angulo);
+    		double cX = TDx(0, h - 1, angulo); double cY = TDy(0, h - 1, angulo);
+    		double dX = TDx(w - 1, h - 1, angulo); double dY = TDy(w - 1, h - 1, angulo);
+    		int minx = (int) Math.floor(Math.min(Math.min(aX, bX), Math.min(cX, dX)));
+    		int maxx = (int) Math.ceil(Math.max(Math.max(aX, bX), Math.max(cX, dX)));
+    		int miny = (int) Math.floor(Math.min(Math.min(aY, bY), Math.min(cY, dY)));
+    		int maxy = (int) Math.ceil(Math.max(Math.max(aY, bY), Math.max(cY, dY)));
+    		int ancho = maxx - minx + 1;
+    		int alto = maxy - miny + 1;
 
             BufferedImage imangen_rotado = new BufferedImage(ancho , alto ,BufferedImage.TYPE_INT_ARGB);
 
             for(int i=0 ; i < ancho; i++) {
                 for(int j=0 ; j < alto; j++) {
-                    int newx = (int) tpx(i + pAx, j + pIy, angulo);
-                    int newy = (int) tpy(i + pAx, j + pIy, angulo);
+                    int newx = (int) TIx(i + minx, j + miny, angulo);
+                    int newy = (int) TIy(i + minx, j + miny, angulo);
                     
                     if(newx >= 0 && newx < w && newy < h && newy >=0) {
                     	
-                    	Color colorPixel = new Color(this.image.getRGB(newx, newy)); 
+                    	Color colorPixel = hayarColor(newx, newy); 
                     	imangen_rotado.setRGB(i, j, colorPixel.getRGB());
                     } 
                     
-                    
-                
                 }
                 
             }
             
-            
-
-            
-            
             image = imangen_rotado;
 	}
 	
-	public double hpx(int x, int y, double angulo) {
+	
+	public void rotationMalo(int rot) {
+		/*
+		 * A-----B
+		 * 
+		 * C-----D
+		 * 
+		 */
+		double angulo = Math.toRadians(rot);
+        int w = this.image.getWidth();
+        int h = this.image.getHeight();
+        double aX = 0; double aY = 0;
+		double bX = TDx(w - 1, 0, angulo); double bY = TDy(w - 1, 0, angulo);
+		double cX = TDx(0, h - 1, angulo); double cY = TDy(0, h - 1, angulo);
+		double dX = TDx(w - 1, h - 1, angulo); double dY = TDy(w - 1, h - 1, angulo);
+		int minx = (int) Math.floor(Math.min(Math.min(aX, bX), Math.min(cX, dX)));
+		int maxx = (int) Math.ceil(Math.max(Math.max(aX, bX), Math.max(cX, dX)));
+		int miny = (int) Math.floor(Math.min(Math.min(aY, bY), Math.min(cY, dY)));
+		int maxy = (int) Math.ceil(Math.max(Math.max(aY, bY), Math.max(cY, dY)));
+		int ancho = maxx - minx + 1;
+		int alto = maxy - miny + 1;
+
+        BufferedImage imangen_rotado = new BufferedImage(ancho , alto ,BufferedImage.TYPE_INT_ARGB);
+
+        for(int i=0 ; i < image.getWidth(); i++) {
+            for(int j=0 ; j <image.getHeight(); j++) {
+                	imangen_rotado.setRGB( (int)TDx(i,j,angulo) - minx, (int)TDy(i,j,angulo) - miny, image.getRGB(i, j));
+            }
+            
+        }
+        
+        image = imangen_rotado;
+}
+	
+	
+	
+	
+	
+	
+	public double TDx(int x, int y, double angulo) {
 		return x * Math.cos(angulo) - y * Math.sin(angulo);
 	}
 	
-	public double hpy(int x, int y, double angulo) {
+	public double TDy(int x, int y, double angulo) {
 		return x * Math.sin(angulo) + y * Math.cos(angulo);
 	}
 	
-	public double tpx(int xPrima, int yPrima, double angulo) {
+	public double TIx(int xPrima, int yPrima, double angulo) {
 		return xPrima * Math.cos(angulo) + yPrima * Math.sin(angulo);
 	}
 	
-	public double tpy(int xPrima, int yPrima, double angulo) {
+	public double TIy(int xPrima, int yPrima, double angulo) {
 		return -xPrima * Math.sin(angulo) + yPrima * Math.cos(angulo);
 	}
 	

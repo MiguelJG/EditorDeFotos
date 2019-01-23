@@ -30,7 +30,8 @@
             <MenuItem mnemonicParsing="false" onAction="#traspuesta" text="Traspuesta" />
             <MenuItem mnemonicParsing="false" onAction="#escaladoVecinoProximo" text="Escalado vecino Proximo" />
             <MenuItem mnemonicParsing="false" onAction="#escaladoInterpolacional" text="Escalado Interpolacional" />
-            <MenuItem mnemonicParsing="false" onAction="#rotado" text="Rotar" />
+            <MenuItem mnemonicParsing="false" onAction="#rotado" text="RotarBueno" />
+            <MenuItem mnemonicParsing="false" onAction="#rotadoMalo" text="RotarMalo" />
          </items>
       </SplitMenuButton>
    </children>
